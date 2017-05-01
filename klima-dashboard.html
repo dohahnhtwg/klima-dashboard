@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 `klima-dashboard`
@@ -13,22 +14,60 @@ dashboard
       :host {
         display: block;
       }
+      .row {
+        @apply(--layout-horizontal);
+      }
     </style>
+
     <h2>Hello [[prop1]]!</h2>
+    <div id="dashboard"></div>
+  </template>
+
+  <template id="dashboardRow">
+    <div class="row"></div>
   </template>
 
   <script>
+    var dashboardRow = document._currentScript.parentNode.querySelector('#dashboardRow');
     Polymer({
-
       is: 'klima-dashboard',
-
       properties: {
         prop1: {
           type: String,
           value: 'klima-dashboard',
         },
+        dashboardMap: {
+          type: Object,
+          value: function() {
+            return new Map();
+          }
+        }
       },
 
+      attached: function() {
+        var children = Polymer.dom(this).children;
+        var dashboardMap = this.dashboardMap;
+        var dashboard = this.$.dashboard;
+        var t = dashboardRow;
+        this._initDashboardMap(children, dashboardMap);
+        this.dashboardMap.forEach(function(v,k) {
+          var clone = document.importNode(t.content, true);
+          v.forEach(function(node) {
+            clone.querySelector('.row').appendChild(node);
+          })
+          dashboard.appendChild(clone);
+        });
+      },
+
+      _initDashboardMap: function(children, dashboardMap) {
+        children.forEach(function(child) {
+          if(dashboardMap.has(child.row)) {
+            dashboardMap.get(child.row).push(child);
+          } else {
+            dashboardMap.set(child.row, [child]);
+          }
+        })
+      }
     });
   </script>
 </dom-module>

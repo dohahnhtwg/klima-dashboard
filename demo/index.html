@@ -11,6 +11,7 @@
     <link rel="import" href="../../iron-demo-helpers/demo-pages-shared-styles.html">
     <link rel="import" href="../../iron-demo-helpers/demo-snippet.html">
     <link rel="import" href="../klima-dashboard.html">
+    <link rel="import" href="../../klima-dashboard-tile/klima-dashboard-tile.html">
 
     <style is="custom-style" include="demo-pages-shared-styles">
     </style>
@@ -20,7 +21,13 @@
       <h3>Basic klima-dashboard demo</h3>
       <demo-snippet>
         <template>
-          <klima-dashboard></klima-dashboard>
+          <klima-dashboard>
+            <klima-dashboard-tile row="1"></klima-dashboard-tile>
+            <klima-dashboard-tile row="1"></klima-dashboard-tile>
+            <klima-dashboard-tile row="2"></klima-dashboard-tile>
+            <klima-dashboard-tile row="3"></klima-dashboard-tile>
+            <klima-dashboard-tile row="2"></klima-dashboard-tile>
+          </klima-dashboard>
         </template>
       </demo-snippet>
     </div>

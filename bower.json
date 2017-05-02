@@ -3,8 +3,7 @@
   "description": "dashboard",
   "main": "klima-dashboard.html",
   "dependencies": {
-    "polymer": "Polymer/polymer#^1.4.0",
-    "klima-dashboard-tile": "https://github.com/dohahnhtwg/klima-dashboard-tile.git"
+    "polymer": "Polymer/polymer#^1.4.0"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

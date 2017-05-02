@@ -1,0 +1,42 @@
+<link rel="import" href="../polymer/polymer.html">
+
+<!--
+`klima-dashboard-tile`
+tile of klima-dashboard
+
+-->
+
+<dom-module id="klima-dashboard-tile">
+  <template>
+    <style>
+      :host {
+        display: block;
+        position: absolute;
+      }
+    </style>
+    <content></content>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'klima-dashboard-tile',
+      properties: {
+        row: {
+          type: Number,
+          value: 0
+        },
+        overlap: {
+          type: Number,
+          value: 0
+        },
+        width: {
+          type: Number,
+          value: 0
+        },
+        leftNeighbour: {
+          type: Object
+        }
+      },
+    });
+  </script>
+</dom-module>

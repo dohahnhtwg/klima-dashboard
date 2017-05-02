@@ -1,5 +1,4 @@
 <link rel="import" href="../polymer/polymer.html">
-<link rel="import" href="../iron-flex-layout/iron-flex-layout.html">
 
 <!--
 `klima-dashboard`
@@ -14,21 +13,21 @@ dashboard
       :host {
         display: block;
       }
-      .row {
-        @apply(--layout-horizontal);
+      #dashboard {
+        position: relative;
+        width: 500px;
+        height: 500px;
+        border-style: solid;
       }
     </style>
 
     <h2>Hello [[prop1]]!</h2>
-    <div id="dashboard"></div>
-  </template>
-
-  <template id="dashboardRow">
-    <div class="row"></div>
+    <div id="dashboard">
+      <content id="tiles" select="klima-dashboard-tile"></content>
+    </div>
   </template>
 
   <script>
-    var dashboardRow = document._currentScript.parentNode.querySelector('#dashboardRow');
     Polymer({
       is: 'klima-dashboard',
       properties: {
@@ -45,28 +44,81 @@ dashboard
       },
 
       attached: function() {
-        var children = Polymer.dom(this).children;
-        var dashboardMap = this.dashboardMap;
-        var dashboard = this.$.dashboard;
-        var t = dashboardRow;
-        this._initDashboardMap(children, dashboardMap);
+        var tiles = this.getContentChildren('#tiles');
+        for(var i=0; i < tiles.length; i++) {
+          for(var j=0; j <= tiles[i].overlap; j++) {
+            this._addTileToDashboard(tiles[i], tiles[i].row + j);
+          }
+        }
+        this._adjustTilesWidth();
+        this._printDashboard();
+        this._drawDashboard();
+      },
+
+      _addTileToDashboard: function(tile, row) {
+        if(this.dashboardMap.has(row)) {
+          if(this.dashboardMap.get(row).length >= 1) {
+            tile.leftNeighbour = this.dashboardMap.get(row)[this.dashboardMap.get(row).length-1];
+          }
+          this.dashboardMap.get(row).push(tile);
+        } else {
+          this.dashboardMap.set(row, [tile]);
+        }
+      },
+
+      _adjustTilesWidth: function() {
         this.dashboardMap.forEach(function(v,k) {
-          var clone = document.importNode(t.content, true);
-          v.forEach(function(node) {
-            clone.querySelector('.row').appendChild(node);
-          })
-          dashboard.appendChild(clone);
+          remainingWidth = 100;
+          remainingTiles = [];
+          v.forEach(function(tile) {
+            if(tile.width == 0) {
+              remainingTiles.push(tile);
+            } else {
+              remainingWidth - tile.width;
+            }
+          });
+          if(remainingWidth < 0) {
+            console.warn("Overfull row");
+          }
+          remainingTiles.forEach(function(tile) {
+            tile.width = remainingWidth/remainingTiles.length;
+          });
         });
       },
 
-      _initDashboardMap: function(children, dashboardMap) {
-        children.forEach(function(child) {
-          if(dashboardMap.has(child.row)) {
-            dashboardMap.get(child.row).push(child);
-          } else {
-            dashboardMap.set(child.row, [child]);
-          }
-        })
+      _printDashboard: function() {
+        this.dashboardMap.forEach(function(v,k) {
+          v.forEach(function(node) {
+            console.log(node.innerText + " has a width of " + node.width);
+            if(node.leftNeighbour != null) {
+              console.log("Left Neighbour of " + node.innerText + " is " + node.leftNeighbour.innerText);
+            } else {
+              console.log("Left Neighbour of " + node.innerText + " is NULL");
+            }
+          })
+        });
+      },
+
+      _drawDashboard: function() {
+        var dashboard = this.$.dashboard;
+        var dashboardHeight = window.getComputedStyle(dashboard, null).getPropertyValue("height");
+        var dashboardWidth = window.getComputedStyle(dashboard, null).getPropertyValue("width");
+        var row = 0;
+        var rowHeight = parseInt(dashboardHeight, 10)/this.dashboardMap.size;
+        var getOffset = this.getOffset;
+        this.dashboardMap.forEach(function(v,k) {
+          v.forEach(function(tile) {
+            if(tile.leftNeighbour != null) {
+              tile.style.left = parseFloat(tile.leftNeighbour.style.left, 10)+parseFloat(tile.leftNeighbour.style.width, 10) + 'px';
+            } else {
+              tile.style.left = 0 + 'px';
+            }
+            tile.style.top = (row - tile.overlap)*rowHeight + 'px'
+            tile.style.width = parseFloat(dashboardWidth, 10)*tile.width/100 + 'px';
+            tile.style.height = (tile.overlap+1)*rowHeight + 'px';
+          });
+          row++;
+        });
       }
     });
   </script>

@@ -82,6 +82,11 @@ dashboard
                 minTile.leftNeighbour = sorted[sorted.length-1];
               }
             }
+            if(sorted.length != 0) {
+              if(sorted[sorted.length-1].row == k) {
+                sorted[sorted.length-1].rightNeighbour = minTile;
+              }
+            }
             sorted.push(minTile);
             v.splice(minIndex, 1);
           }
@@ -151,8 +156,12 @@ dashboard
               leftNeighbour = leftNeighbour.leftNeighbour;
             }
             tile.style.left = left + 'px';
-            tile.style.top = (tile.row-1)*rowHeight + 'px'
-            tile.style.width = parseFloat(dashboardWidth, 10)*tile.width/100 + 'px';
+            tile.style.top = (tile.row-1)*rowHeight + 'px';
+            if(tile.rightNeighbour != null && parseFloat(dashboardWidth, 10)*tile.width/100 > parseFloat(tile.rightNeighbour.style.left, 10) - parseFloat(tile.style.left, 10)) {
+              tile.style.width = parseFloat(tile.rightNeighbour.style.left, 10) - parseFloat(tile.style.left, 10) + 'px';
+            } else {
+              tile.style.width = parseFloat(dashboardWidth, 10)*tile.width/100 + 'px';
+            }
             tile.style.height = (tile.overlap+1)*rowHeight + 'px';
           });
         });

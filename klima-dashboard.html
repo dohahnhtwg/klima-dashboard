@@ -15,8 +15,8 @@ dashboard
       }
       #dashboard {
         position: relative;
-        width: 500px;
-        height: 500px;
+        width: 700px;
+        height: 700px;
         border-style: solid;
       }
     </style>
@@ -45,21 +45,55 @@ dashboard
 
       attached: function() {
         var tiles = this.getContentChildren('#tiles');
+        //Add tiles
         for(var i=0; i < tiles.length; i++) {
           for(var j=0; j <= tiles[i].overlap; j++) {
             this._addTileToDashboard(tiles[i], tiles[i].row + j);
           }
         }
+        this._sortDashboardMap();
         this._adjustTilesWidth();
         this._printDashboard();
         this._drawDashboard();
       },
 
-      _addTileToDashboard: function(tile, row) {
-        if(this.dashboardMap.has(row)) {
-          if(this.dashboardMap.get(row).length >= 1) {
-            tile.leftNeighbour = this.dashboardMap.get(row)[this.dashboardMap.get(row).length-1];
+      _sortDashboardMap: function() {
+        var dashboardMap = this.dashboardMap;
+        dashboardMap.forEach(function(v,k) {
+          var sorted = [];
+          var smallestOrder = null;
+          var numberTiles = v.length;
+          for(var i=0; i < numberTiles; i++) {
+            var len = v.length;
+            var min = Infinity;
+            var minTile = null;
+            var minIndex = -1;
+            while (len--) {
+              if (v[len].order[k-v[len].row] < min) {
+                min = v[len].order[k-v[len].row];
+                minTile = v[len];
+                minIndex = len;
+              }
+            }
+            if(minTile.row == k) {
+              if(sorted.length == 0) {
+                minTile.leftNeighbour = null;
+              } else {
+                minTile.leftNeighbour = sorted[sorted.length-1];
+              }
+            }
+            sorted.push(minTile);
+            v.splice(minIndex, 1);
           }
+          dashboardMap.set(k, sorted);
+        });
+      },
+
+      _addTileToDashboard: function(tile, row) {
+        if(tile.overlap+1 != tile.order.length) {
+          console.warn(tile.outerHTML + "\nNo order for row " + row);
+        }
+        if(this.dashboardMap.has(row)) {
           this.dashboardMap.get(row).push(tile);
         } else {
           this.dashboardMap.set(row, [tile]);
@@ -74,7 +108,7 @@ dashboard
             if(tile.width == 0) {
               remainingTiles.push(tile);
             } else {
-              remainingWidth - tile.width;
+              remainingWidth -= tile.width;
             }
           });
           if(remainingWidth < 0) {
@@ -89,11 +123,13 @@ dashboard
       _printDashboard: function() {
         this.dashboardMap.forEach(function(v,k) {
           v.forEach(function(node) {
-            console.log(node.innerText + " has a width of " + node.width);
-            if(node.leftNeighbour != null) {
-              console.log("Left Neighbour of " + node.innerText + " is " + node.leftNeighbour.innerText);
-            } else {
-              console.log("Left Neighbour of " + node.innerText + " is NULL");
+            if(node.row == k) {
+              console.log(node.innerText + " has a width of " + node.width);
+              if(node.leftNeighbour != null) {
+                console.log("Left Neighbour of " + node.innerText + " is " + node.leftNeighbour.innerText);
+              } else {
+                console.log("Left Neighbour of " + node.innerText + " is NULL");
+              }
             }
           })
         });
@@ -103,21 +139,22 @@ dashboard
         var dashboard = this.$.dashboard;
         var dashboardHeight = window.getComputedStyle(dashboard, null).getPropertyValue("height");
         var dashboardWidth = window.getComputedStyle(dashboard, null).getPropertyValue("width");
-        var row = 0;
         var rowHeight = parseInt(dashboardHeight, 10)/this.dashboardMap.size;
         var getOffset = this.getOffset;
         this.dashboardMap.forEach(function(v,k) {
           v.forEach(function(tile) {
-            if(tile.leftNeighbour != null) {
-              tile.style.left = parseFloat(tile.leftNeighbour.style.left, 10)+parseFloat(tile.leftNeighbour.style.width, 10) + 'px';
-            } else {
-              tile.style.left = 0 + 'px';
+            if(tile.row != k) {return;}
+            var leftNeighbour = tile.leftNeighbour;
+            var left = 0;
+            while(leftNeighbour != null) {
+              left += parseFloat(dashboardWidth, 10)*leftNeighbour.width/100
+              leftNeighbour = leftNeighbour.leftNeighbour;
             }
-            tile.style.top = (row - tile.overlap)*rowHeight + 'px'
+            tile.style.left = left + 'px';
+            tile.style.top = (tile.row-1)*rowHeight + 'px'
             tile.style.width = parseFloat(dashboardWidth, 10)*tile.width/100 + 'px';
             tile.style.height = (tile.overlap+1)*rowHeight + 'px';
           });
-          row++;
         });
       }
     });

@@ -21,7 +21,7 @@ dashboard
       }
     </style>
 
-    <h2>Hello [[prop1]]!</h2>
+    <h2>Hello!</h2>
     <div id="dashboard">
       <content id="tiles" select="klima-dashboard-tile"></content>
     </div>
@@ -31,10 +31,6 @@ dashboard
     Polymer({
       is: 'klima-dashboard',
       properties: {
-        prop1: {
-          type: String,
-          value: 'klima-dashboard',
-        },
         dashboardMap: {
           type: Object,
           value: function() {
@@ -44,58 +40,25 @@ dashboard
       },
 
       attached: function() {
+        this._addTilesFromLightDomToDashboard();
+        this._sortDashboardMap();
+        this._printDashboard();
+        this._drawDashboard();
+      },
+
+      _addTilesFromLightDomToDashboard: function() {
         var tiles = this.getContentChildren('#tiles');
-        //Add tiles
         for(var i=0; i < tiles.length; i++) {
           for(var j=0; j <= tiles[i].overlap; j++) {
             this._addTileToDashboard(tiles[i], tiles[i].row + j);
           }
         }
-        this._sortDashboardMap();
-        //this._printDashboard();
-        this._drawDashboard();
-      },
-
-      _sortDashboardMap: function() {
-        var dashboardMap = this.dashboardMap;
-        dashboardMap.forEach(function(v,k) {
-          var sorted = [];
-          var smallestOrder = null;
-          var numberTiles = v.length;
-          for(var i=0; i < numberTiles; i++) {
-            var len = v.length;
-            var min = Infinity;
-            var minTile = null;
-            var minIndex = -1;
-            while (len--) {
-              if (v[len].order[k-v[len].row] < min) {
-                min = v[len].order[k-v[len].row];
-                minTile = v[len];
-                minIndex = len;
-              }
-            }
-            if(minTile.row == k) {
-              if(sorted.length == 0) {
-                minTile.leftNeighbour = null;
-              } else {
-                minTile.leftNeighbour = sorted[sorted.length-1];
-              }
-            }
-            if(sorted.length != 0) {
-              if(sorted[sorted.length-1].row == k) {
-                sorted[sorted.length-1].rightNeighbour = minTile;
-              }
-            }
-            sorted.push(minTile);
-            v.splice(minIndex, 1);
-          }
-          dashboardMap.set(k, sorted);
-        });
       },
 
       _addTileToDashboard: function(tile, row) {
-        if(tile.overlap+1 != tile.order.length) {
-          console.warn(tile.outerHTML + "\nNo order for row " + row);
+        var notEnoughPositionsForRow = tile.overlap+1 != tile.positions.length;
+        if(notEnoughPositionsForRow) {
+          console.warn(tile.outerHTML + "\nNo position for row " + row);
         }
         if(this.dashboardMap.has(row)) {
           this.dashboardMap.get(row).push(tile);
@@ -104,10 +67,46 @@ dashboard
         }
       },
 
+      _sortDashboardMap: function() {
+        var dashboardMap = this.dashboardMap;
+        dashboardMap.forEach(function(tiles, row) {
+          var sorted = [];
+          var numberTiles = tiles.length;
+          for(var i=0; i < numberTiles; i++) {
+            var len = tiles.length;
+            var minPosition = Infinity;
+            var minTile = null;
+            var minIndex = -1;
+            while(len--) {
+              if(tiles[len].positions[row-tiles[len].row] < minPosition) {
+                minPosition = tiles[len].positions[row-tiles[len].row];
+                minTile = tiles[len];
+                minIndex = len;
+              }
+            }
+            if(minTile.row == row) {
+              if(sorted.length == 0) {
+                minTile.leftNeighbour = null;
+              } else {
+                minTile.leftNeighbour = sorted[sorted.length-1];
+              }
+            }
+            if(sorted.length != 0) {
+              if(sorted[sorted.length-1].row == row) {
+                sorted[sorted.length-1].rightNeighbour = minTile;
+              }
+            }
+            sorted.push(minTile);
+            tiles.splice(minIndex, 1);
+          }
+          dashboardMap.set(row, sorted);
+        });
+      },
+
       _printDashboard: function() {
-        this.dashboardMap.forEach(function(v,k) {
-          v.forEach(function(node) {
-            if(node.row == k) {
+        this.dashboardMap.forEach(function(tiles, row) {
+          tiles.forEach(function(node) {
+            if(node.row == row) {
               console.log(node.innerText + " has a width of " + node.width);
               if(node.leftNeighbour != null) {
                 console.log("Left Neighbour of " + node.innerText + " is " + node.leftNeighbour.innerText);
@@ -120,24 +119,20 @@ dashboard
       },
 
       _drawDashboard: function() {
-        var dashboard = this.$.dashboard;
-        var dashboardHeight = window.getComputedStyle(dashboard, null).getPropertyValue("height");
-        var dashboardWidth = window.getComputedStyle(dashboard, null).getPropertyValue("width");
-        var dashboardLeft = window.getComputedStyle(dashboard, null).getPropertyValue("left");
+        var dashboardHeight = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("height");
+        var dashboardWidth = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("width");
+        var dashboardLeft = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("left");
         var rowHeight = parseInt(dashboardHeight, 10)/this.dashboardMap.size;
-        var getOffset = this.getOffset;
         var dashboardMap = this.dashboardMap;
-        this.dashboardMap.forEach(function(v,k) {
-          v.forEach(function(tile) {
+        this.dashboardMap.forEach(function(tiles, k) {
+          tiles.forEach(function(tile) {
             if(tile.row != k) {return;}
             var leftNeighbour = tile.leftNeighbour;
-            var left = 0;
-
             if(tile.width == 0) {
               var minWidth = Infinity;
               for(var i=0; i <= tile.overlap; i++) {
                 var row = dashboardMap.get(tile.row + i);
-                var rightNeighbour = row[tile.order[i]];
+                var rightNeighbour = row[tile.positions[i]];
                 var remainingTiles = 1;
                 var reservedWidth = 0;
                 while (rightNeighbour != null && !rightNeighbour.tiledrawn) {
@@ -148,6 +143,7 @@ dashboard
                   }
                   rightNeighbour = rightNeighbour.rightNeighbour;
                 }
+
                 var end = 0;
                 var start = 0;
                 if(tile.leftNeighbour == null) {
@@ -170,7 +166,7 @@ dashboard
             } else {
                tile.style.width = (tile.width/100*parseFloat(dashboardWidth, 10)) + 'px';
             }
-
+            var left = 0;
             while(leftNeighbour != null) {
               left += parseFloat(leftNeighbour.style.width, 10)
               leftNeighbour = leftNeighbour.leftNeighbour;

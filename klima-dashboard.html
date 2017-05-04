@@ -52,8 +52,8 @@ dashboard
           }
         }
         this._sortDashboardMap();
-        this._adjustTilesWidth();
-        this._printDashboard();
+        //this._adjustTilesWidth();
+        //this._printDashboard();
         this._drawDashboard();
       },
 
@@ -107,15 +107,20 @@ dashboard
 
       _adjustTilesWidth: function() {
         this.dashboardMap.forEach(function(v,k) {
+          console.log("ROW: " + k);
           remainingWidth = 100;
           remainingTiles = [];
           v.forEach(function(tile) {
+            console.log(tile.innerText);
             if(tile.width == 0) {
+              console.log("PUSH");
               remainingTiles.push(tile);
             } else {
+              console.log(tile.width);
               remainingWidth -= tile.width;
             }
           });
+          // Hier
           if(remainingWidth < 0) {
             console.warn("Overfull row");
           }
@@ -144,6 +149,7 @@ dashboard
         var dashboard = this.$.dashboard;
         var dashboardHeight = window.getComputedStyle(dashboard, null).getPropertyValue("height");
         var dashboardWidth = window.getComputedStyle(dashboard, null).getPropertyValue("width");
+        var dashboardLeft = window.getComputedStyle(dashboard, null).getPropertyValue("left");
         var rowHeight = parseInt(dashboardHeight, 10)/this.dashboardMap.size;
         var getOffset = this.getOffset;
         this.dashboardMap.forEach(function(v,k) {
@@ -151,18 +157,57 @@ dashboard
             if(tile.row != k) {return;}
             var leftNeighbour = tile.leftNeighbour;
             var left = 0;
+
+            //new
+            if(tile.width == 0) {
+              var rightNeighbour = tile.rightNeighbour;
+              var remainingTiles = 1;
+              var reservedWidth = 0;
+              while (rightNeighbour != null && !rightNeighbour.tiledrawn) {
+                console.log(tile.innerText + ": " + rightNeighbour.innerText);
+                if(rightNeighbour.width == 0) {
+                  remainingTiles += 1;
+                } else {
+                  reservedWidth += rightNeighbour.width/100*parseFloat(dashboardWidth, 10);
+                }
+                rightNeighbour = rightNeighbour.rightNeighbour;
+              }
+              var end = 0;
+              var start = 0;
+              if(tile.leftNeighbour == null) {
+                start = 0;
+              } else {
+                console.log("LEFT: " + parseFloat(tile.leftNeighbour.style.left, 10));
+                start = parseFloat(tile.leftNeighbour.style.left, 10) + parseFloat(tile.leftNeighbour.style.width, 10);
+              }
+              if(rightNeighbour == null) {
+                end = parseFloat(dashboardLeft, 10) + parseFloat(dashboardWidth, 10);
+                console.log("END 700???");
+              } else {
+                end = parseFloat(rightNeighbour.style.left, 10)
+              }
+              console.log("START: " + start + " END: " + end + " reservedWidth: " + reservedWidth);
+              var remainingWidth = end - start - reservedWidth;
+              var width = remainingWidth/remainingTiles;
+              if(width < 0) {
+                tile.style.width = '0px'
+              } else {
+                console.log(width);
+                tile.style.width = width + 'px';
+              }
+            //
+            } else {
+               tile.style.width = (tile.width/100*parseFloat(dashboardWidth, 10)) + 'px';
+            }
+
             while(leftNeighbour != null) {
-              left += parseFloat(dashboardWidth, 10)*leftNeighbour.width/100
+              left += parseFloat(leftNeighbour.style.width, 10)
               leftNeighbour = leftNeighbour.leftNeighbour;
             }
             tile.style.left = left + 'px';
             tile.style.top = (tile.row-1)*rowHeight + 'px';
-            if(tile.rightNeighbour != null && parseFloat(dashboardWidth, 10)*tile.width/100 > parseFloat(tile.rightNeighbour.style.left, 10) - parseFloat(tile.style.left, 10)) {
-              tile.style.width = parseFloat(tile.rightNeighbour.style.left, 10) - parseFloat(tile.style.left, 10) + 'px';
-            } else {
-              tile.style.width = parseFloat(dashboardWidth, 10)*tile.width/100 + 'px';
-            }
             tile.style.height = (tile.overlap+1)*rowHeight + 'px';
+            tile.tiledrawn = true;
           });
         });
       }

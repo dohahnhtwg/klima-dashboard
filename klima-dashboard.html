@@ -96,6 +96,9 @@ dashboard
                 sorted[sorted.length-1].rightNeighbour = minTile;
               }
             }
+            if(sorted.length == numberTiles-1) {
+              minTile.rightNeighbour = null;
+            }
             sorted.push(minTile);
             tiles.splice(minIndex, 1);
           }

@@ -8,7 +8,7 @@
 
     <script src="../../webcomponentsjs/webcomponents-lite.js"></script>
     <script src="../../web-component-tester/browser.js"></script>
-
+    <link rel="import" href="../klima-dashboard-tile.html">
     <link rel="import" href="../klima-dashboard.html">
   </head>
   <body>
@@ -18,11 +18,54 @@
       </template>
     </test-fixture>
 
+    <test-fixture id="oneRow">
+      <template>
+        <klima-dashboard>
+          <klima-dashboard-tile id="tileB" style="background-color: blue;" row="1" positions="[2]">B</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileA" style="background-color: red;" row="1" positions="[1]">A</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileD" style="background-color: yellow;" row="1" positions="[4]">D</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileC" style="background-color: green;" row="1" positions="[3]">C</klima-dashboard-tile>
+        </klima-dashboard>
+      </template>
+    </test-fixture>
+
     <script>
       suite('klima-dashboard', function() {
         test('instantiating the element works', function() {
           var element = fixture('basic');
           assert.equal(element.is, 'klima-dashboard');
+        });
+        test('tiles are added to dashboardMap', function() {
+          var element = fixture('oneRow');
+          var dashboardMap = element.dashboardMap;
+          expect(dashboardMap.size).to.be.equal(1);
+          expect(dashboardMap.has(1)).to.be.ok;
+          expect(dashboardMap.get(1).length).to.be.equal(4);
+        });
+        test('dashboardMap should be sorted', function() {
+          var element = fixture('oneRow');
+          var dashboardMap = element.dashboardMap;
+          expect(dashboardMap.get(1)[0]).to.be.equal(document.getElementById("tileA"));
+          expect(dashboardMap.get(1)[1]).to.be.equal(document.getElementById("tileB"));
+          expect(dashboardMap.get(1)[2]).to.be.equal(document.getElementById("tileC"));
+          expect(dashboardMap.get(1)[3]).to.be.equal(document.getElementById("tileD"));
+        });
+        test('dashboard should set neighbours', function() {
+          var element = fixture('oneRow');
+          var a = document.getElementById("tileA");
+          var b = document.getElementById("tileB");
+          var c = document.getElementById("tileC");
+          var d = document.getElementById("tileD");
+
+          expect(a.rightNeighbour).to.be.equal(b);
+          expect(b.rightNeighbour).to.be.equal(c);
+          expect(c.rightNeighbour).to.be.equal(d);
+          expect(d.rightNeighbour).to.be.equal(null);
+
+          expect(a.leftNeighbour).to.be.equal(null);
+          expect(b.leftNeighbour).to.be.equal(a);
+          expect(c.leftNeighbour).to.be.equal(b);
+          expect(d.leftNeighbour).to.be.equal(c);
         });
       });
     </script>

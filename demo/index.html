@@ -22,13 +22,151 @@
       <demo-snippet>
         <template>
           <klima-dashboard>
-            <klima-dashboard-tile style="background-color: red;" row="1" overlap="1" width="50">A</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: blue;" row="1" width="25">B</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: green;" row="1" width="25">C</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: yellow;" row="2" width="50">D</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: orange;" row="3">E</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: aqua;" row="3">F</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: hotpink;" row="3">G</klima-dashboard-tile>
+            <!-- A -->
+            <!-- <klima-dashboard-tile style="background-color: red;" row="1" overlap="1" order="[1,1]" width="50">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[2]" width="25">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[3]" width="25">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="2" order="[2]" width="50">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="3" order="[1]">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="3" order="[2]">F</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" order="[3]">G</klima-dashboard-tile> -->
+
+            <!-- B -->
+            <!-- <klima-dashboard-tile style="background-color: red;" row="1" order="[1]" width="20">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[2]" width="60">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[3]" width="20">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="2" order="[1]">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="3" overlap="1" order="[1,1]" width="10">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="3" overlap="1" order="[2,2]" width="10">F</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: darkgreen;" row="3" overlap="1" order="[3,3]" width="70">G</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" overlap="2" order="[4,4,3]" width="5">H</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="3" overlap="2" order="[5,5,4]" width="5">I</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="5" order="[1]" width="60">J</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="5" order="[2]" width="30">K</klima-dashboard-tile> -->
+
+            <!-- B with mixed rows -->
+            <!-- <klima-dashboard-tile style="background-color: hotpink;" row="3" overlap="2" order="[4,4,3]" width="5">H</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="2" order="[1]">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[2]" width="60">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="5" order="[2]" width="30">K</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[3]" width="20">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="3" overlap="1" order="[3,3]" width="70">G</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="1" order="[1]" width="20">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="5" order="[1]" width="60">J</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="3" overlap="2" order="[5,5,4]" width="5">I</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="3" overlap="1" order="[1,1]" width="10">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="3" overlap="1" order="[2,2]" width="10">F</klima-dashboard-tile> -->
+
+            <!-- C without widths -->
+            <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[1]">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[2]">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[3]">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="1" order="[4]">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[5]">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="1" order="[6]">F</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="1" order="[7]">G</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="1" order="[8]">H</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="1" order="[9]">I</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="1" order="[10]">J</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="1" order="[11]">K</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[12]">L</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[13]">M</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="2" overlap="8" order="[2,2,2,2,2,2,2,2,2]">P</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="2" overlap="1" order="[3,3]">Q</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="2" order="[4]">R</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="2" overlap="1" order="[5,7]">S</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="2" overlap="1" order="[6,8]">T</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="4" order="[1,1,1,1,1]">V</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="9"  overlap="1" order="[1,1]">1</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="3" overlap="6" order="[4,4,4,4,4,4,4]">X</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="2" overlap="1" order="[1,1]">O</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" overlap="5" order="[5,5,5,5,5,5]">Y</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="3" overlap="2" order="[6,6,6]">Z</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="4" overlap="4" order="[3,3,3,3,3]">W</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="9" overlap="1" order="[3,3]">2</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="10" order="[4]">3</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="10" order="[5]">5</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="9" order="[5]">4</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="8" overlap="2" order="[7,7,6]">8</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="8" overlap="2" order="[8,8,7]">10</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="6" overlap="1" order="[7,7]">7</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="6" overlap="1" order="[8,8]">9</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" order="[6,6,6,6]">6</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" order="[7,7]">0</klima-dashboard-tile> -->
+
+            <!-- C with widths -->
+            <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[1]" width="8">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[2]" width="8">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[3]" width="8">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="1" order="[4]" width="8">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[5]" width="8">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="1" order="[6]" width="8">F</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="1" order="[7]" width="8">G</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="1" order="[8]" width="8">H</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="1" order="[9]" width="8">I</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="1" order="[10]" width="8">J</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="1" order="[11]" width="8">K</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[12]" width="8">L</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[13]" width="4">M</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="2" overlap="8" order="[2,2,2,2,2,2,2,2,2]" width="8">P</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="2" overlap="1" order="[3,3]" width="8">Q</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="2" order="[4]" width="32">R</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="2" overlap="1" order="[5,7]" width="24">S</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="2" overlap="1" order="[6,8]" width="20">T</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="4" order="[1,1,1,1,1]" width="8">V</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="9"  overlap="1" order="[1,1]" width="8">1</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="3" overlap="6" order="[4,4,4,4,4,4,4]" width="8">X</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="2" overlap="1" order="[1,1]" width="8">O</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" overlap="5" order="[5,5,5,5,5,5]" width="16">Y</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="3" overlap="2" order="[6,6,6]" width="8">Z</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="4" overlap="4" order="[3,3,3,3,3]" width="8">W</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="9" overlap="1" order="[3,3]" width="8">2</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="10" order="[4]" width="16">3</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="10" order="[5]" width="16">5</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="9" order="[5]" width="16">4</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="8" overlap="2" order="[7,7,6]" width="24">8</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="8" overlap="2" order="[8,8,7]" width="20">10</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="6" overlap="1" order="[7,7]" width="24">7</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="6" overlap="1" order="[8,8]" width="20">9</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" order="[6,6,6,6]" width="8">6</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" order="[7,7]" width="44">0</klima-dashboard-tile> -->
+
+            <!-- C with and without widths -->
+            <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[1]">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[2]" width="8">B</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="1" order="[3]">C</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="1" order="[4]" width="8">D</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="1" order="[5]">E</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="1" order="[6]" width="8">F</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="1" order="[7]">G</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="1" order="[8]" width="8">H</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="1" order="[9]">I</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="1" order="[10]" width="8">J</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="1" order="[11]">K</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="1" order="[12]" width="8">L</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="1" order="[13]">M</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="2" overlap="1" order="[1,1]" width="8">O</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="2" overlap="8" order="[2,2,2,2,2,2,2,2,2]" width="8">P</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: green;" row="2" overlap="1" order="[3,3]">Q</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="2" order="[4]" width="32">R</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="2" overlap="1" order="[5,7]">S</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="2" overlap="1" order="[6,8]" width="20">T</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="4" order="[1,1,1,1,1]">V</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="4" overlap="4" order="[3,3,3,3,3]">W</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="3" overlap="6" order="[4,4,4,4,4,4,4]">X</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" overlap="5" order="[5,5,5,5,5,5]">Y</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: yellow;" row="3" overlap="2" order="[6,6,6]" width="8">Z</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" order="[7,7]">0</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="9"  overlap="1" order="[1,1]" width="8">1</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="9" overlap="1" order="[3,3]" width="8">2</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="10" order="[4]">3</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: silver;" row="9" order="[5]">4</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: orange;" row="10" order="[5]" width="16">5</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" order="[6,6,6,6]" width="8">6</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: aqua;" row="6" overlap="1" order="[7,7]" width="24">7</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: blue;" row="8" overlap="2" order="[7,7,6]" width="24">8</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: lime;" row="6" overlap="1" order="[8,8]">9</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: pink;" row="8" overlap="2" order="[8,8,7]">10</klima-dashboard-tile>
           </klima-dashboard>
         </template>
       </demo-snippet>

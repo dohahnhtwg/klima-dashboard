@@ -40,7 +40,7 @@ dashboard
       attached: function() {
         this._addTilesFromLightDomToDashboard();
         this._sortDashboardMap();
-        this._printDashboard();
+        //this._printDashboard();
         this._drawDashboard();
       },
 
@@ -127,56 +127,89 @@ dashboard
         var dashboardMap = this.dashboardMap;
         this.dashboardMap.forEach(function(tiles, k) {
           tiles.forEach(function(tile) {
-            if(tile.row != k) {return;}
             var leftNeighbour = tile.leftNeighbour;
-            if(tile.width == 0) {
-              var minWidth = Infinity;
-              for(var i=0; i <= tile.overlap; i++) {
-                var row = dashboardMap.get(tile.row + i);
-                var rightNeighbour = row[tile.positions[i]];
-                var remainingTiles = 1;
-                var reservedWidth = 0;
-                while (rightNeighbour != null && !rightNeighbour.tiledrawn) {
-                  if(rightNeighbour.width == 0) {
+            var greatestLeft = 0;
+            var computedWith = 0;
+            var minWidth = Infinity;
+            for(var i=0; i <= tile.overlap; i++) {
+              var indexRightNeighbour = tile.positions[i];
+              var row = dashboardMap.get(tile.row + i);
+              var rightNeighbour = row[tile.positions[i]];
+              var remainingTiles = 1;
+              var reservedWidth = 0;
+              if(tile.width == 0) {
+                var j = indexRightNeighbour;
+                for(j; j < row.length; j++) {
+                  if(row[j].tiledrawn) {break;}
+                  if(row[j].width == 0) {
                     remainingTiles += 1;
                   } else {
-                    reservedWidth += rightNeighbour.width/100*parseFloat(dashboardWidth, 10);
+                    reservedWidth += row[j].width/100*parseFloat(dashboardWidth, 10);
                   }
-                  rightNeighbour = rightNeighbour.rightNeighbour;
                 }
-
                 var end = 0;
                 var start = 0;
-                if(tile.leftNeighbour == null) {
+                if(row[indexRightNeighbour-2] == null) {
                   start = 0;
                 } else {
-                  start = parseFloat(tile.leftNeighbour.style.left, 10) + parseFloat(tile.leftNeighbour.style.width, 10);
+                  start = parseFloat(row[indexRightNeighbour-2].style.left, 10) + parseFloat(row[indexRightNeighbour-2].style.width, 10);
                 }
-                if(rightNeighbour == null) {
+                if(row[j] == null) {
                   end = parseFloat(dashboardLeft, 10) + parseFloat(dashboardWidth, 10);
                 } else {
-                  end = parseFloat(rightNeighbour.style.left, 10)
+                  end = parseFloat(row[j].style.left, 10)
                 }
                 var remainingWidth = end - start - reservedWidth;
                 var width = remainingWidth/remainingTiles;
                 if(width < minWidth) {
                   minWidth = width;
                 }
+                computedWith = minWidth + 'px';
+              } else {
+                computedWith = (tile.width/100*parseFloat(dashboardWidth, 10)) + 'px';
               }
-              tile.style.width = minWidth + 'px';
-            } else {
-               tile.style.width = (tile.width/100*parseFloat(dashboardWidth, 10)) + 'px';
+              var left = 0;
+              for(var y=indexRightNeighbour-2; y >= 0; y--) {
+                left += parseFloat(row[y].style.width, 10)
+              }
+              if(left > greatestLeft) {
+                greatestLeft = left;
+              }
             }
-            var left = 0;
-            while(leftNeighbour != null) {
-              left += parseFloat(leftNeighbour.style.width, 10)
-              leftNeighbour = leftNeighbour.leftNeighbour;
+            tile.style.width = computedWith;
+            if(parseFloat(tile.style.left, 10) < parseFloat(greatestLeft, 10)) {
+              for(var z=0; z <= tile.overlap; z++) {
+                var leftNeighbourToAdjust = dashboardMap.get(tile.row+z)[tile.positions[z]-2];
+                if(leftNeighbourToAdjust != null && leftNeighbourToAdjust.width == 0) {
+                  var adjustedWidth = greatestLeft - parseFloat(leftNeighbourToAdjust.style.left, 10);
+                  leftNeighbourToAdjust.style.width = adjustedWidth + 'px';
+                }
+              }
             }
-            tile.style.left = left + 'px';
+            tile.style.left = greatestLeft + 'px';
             tile.style.top = (tile.row-1)*rowHeight + 'px';
             tile.style.height = (tile.overlap+1)*rowHeight + 'px';
             tile.tiledrawn = true;
           });
+        });
+        this._fillRemainingSpaces();
+      },
+
+      _fillRemainingSpaces: function() {
+        this.dashboardMap.forEach(function(tiles, k) {
+          for(var i=0; i < tiles.length; i++) {
+            if(tiles[i+1] != null && tiles[i+1].width == 0) {
+              if(tiles[i].row <= tiles[i+1].row && tiles[i].row + tiles[i].overlap >= tiles[i+1].row + tiles[i+1].overlap) {
+                var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
+                if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
+                  var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
+                  console.log(tiles[i].innerText + " wants to asdjust " + tiles[i+1].innerText);
+                  tiles[i+1].style.left = rightBorder + 'px';
+                  tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
+                }
+              }
+            }
+          }
         });
       }
     });

@@ -10,21 +10,54 @@
     <script src="../../web-component-tester/browser.js"></script>
     <link rel="import" href="../klima-dashboard-tile.html">
     <link rel="import" href="../klima-dashboard.html">
+    <style is="custom-style">
+      /* Make all toolbar titles in this host green by default */
+      .dashboards {
+        --klima-dashboard-width: 400px;
+        --klima-dashboard-height: 300px;
+      }
+    </style>
   </head>
   <body>
     <test-fixture id="basic">
       <template>
-        <klima-dashboard></klima-dashboard>
+        <klima-dashboard class="dashboards"></klima-dashboard>
       </template>
     </test-fixture>
 
     <test-fixture id="oneRow">
       <template>
-        <klima-dashboard>
+        <klima-dashboard class="dashboards">
           <klima-dashboard-tile id="tileB" style="background-color: blue;" row="1" positions="[2]">B</klima-dashboard-tile>
           <klima-dashboard-tile id="tileA" style="background-color: red;" row="1" positions="[1]">A</klima-dashboard-tile>
           <klima-dashboard-tile id="tileD" style="background-color: yellow;" row="1" positions="[4]">D</klima-dashboard-tile>
           <klima-dashboard-tile id="tileC" style="background-color: green;" row="1" positions="[3]">C</klima-dashboard-tile>
+        </klima-dashboard>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="multipleRow">
+      <template>
+        <klima-dashboard class="dashboards">
+          <klima-dashboard-tile id="tileE" style="background-color: blue;" row="1" overlap="2" positions="[1,1,1]">E</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileF" style="background-color: red;" row="1" overlap="1" positions="[2,2]">F</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileG" style="background-color: yellow;" row="3" positions="[2]">G</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileH" style="background-color: green;" row="1" positions="[3]">H</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileI" style="background-color: hotpink;" row="2" overlap="1" positions="[3,3]">I</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileJ" style="background-color: lime;" row="1" overlap="2" positions="[4,4,4]">J</klima-dashboard-tile>
+        </klima-dashboard>
+      </template>
+    </test-fixture>
+
+    <test-fixture id="multipleRowWithWidth">
+      <template>
+        <klima-dashboard class="dashboards">
+          <klima-dashboard-tile id="tileK" style="background-color: blue;" row="1" overlap="2" positions="[1,1,1]">K</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileL" style="background-color: red;" row="1" overlap="1" positions="[2,2]" width="40">L</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileM" style="background-color: yellow;" row="3" positions="[2]">M</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileN" style="background-color: green;" row="1" positions="[3]" width="40">N</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileO" style="background-color: hotpink;" row="2" overlap="1" positions="[3,3]">O</klima-dashboard-tile>
+          <klima-dashboard-tile id="tileP" style="background-color: lime;" row="1" overlap="2" positions="[4,4,4]">P</klima-dashboard-tile>
         </klima-dashboard>
       </template>
     </test-fixture>
@@ -66,6 +99,85 @@
           expect(b.leftNeighbour).to.be.equal(a);
           expect(c.leftNeighbour).to.be.equal(b);
           expect(d.leftNeighbour).to.be.equal(c);
+        });
+        test('dashboard should divide avaiable space between tiles', function() {
+          var element = fixture('oneRow');
+          var a = document.getElementById("tileA");
+          var b = document.getElementById("tileB");
+          var c = document.getElementById("tileC");
+          var d = document.getElementById("tileD");
+
+          expect(window.getComputedStyle(a,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(b,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(c,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(d,null).getPropertyValue("width")).to.be.equal("100px");
+
+          expect(window.getComputedStyle(a,null).getPropertyValue("height")).to.be.equal("300px");
+          expect(window.getComputedStyle(b,null).getPropertyValue("height")).to.be.equal("300px");
+          expect(window.getComputedStyle(c,null).getPropertyValue("height")).to.be.equal("300px");
+          expect(window.getComputedStyle(d,null).getPropertyValue("height")).to.be.equal("300px");
+        });
+        test('dashboard should account overlaps', function() {
+          var element = fixture('multipleRow');
+          var e = document.getElementById("tileE");
+          var f = document.getElementById("tileF");
+          var g = document.getElementById("tileG");
+          var h = document.getElementById("tileH");
+          var i = document.getElementById("tileI");
+          var j = document.getElementById("tileJ");
+
+          expect(window.getComputedStyle(e,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(f,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(g,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(h,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(i,null).getPropertyValue("width")).to.be.equal("100px");
+          expect(window.getComputedStyle(j,null).getPropertyValue("width")).to.be.equal("100px");
+
+          expect(window.getComputedStyle(e,null).getPropertyValue("height")).to.be.equal("300px");
+          expect(window.getComputedStyle(f,null).getPropertyValue("height")).to.be.equal("200px");
+          expect(window.getComputedStyle(g,null).getPropertyValue("height")).to.be.equal("100px");
+          expect(window.getComputedStyle(h,null).getPropertyValue("height")).to.be.equal("100px");
+          expect(window.getComputedStyle(i,null).getPropertyValue("height")).to.be.equal("200px");
+          expect(window.getComputedStyle(j,null).getPropertyValue("height")).to.be.equal("300px");
+        });
+        test('neighbour with multiple rows', function() {
+          var element = fixture('multipleRow');
+          var e = document.getElementById("tileE");
+          var f = document.getElementById("tileF");
+          var g = document.getElementById("tileG");
+          var h = document.getElementById("tileH");
+          var i = document.getElementById("tileI");
+          var j = document.getElementById("tileJ");
+
+          expect(e.rightNeighbour).to.be.equal(f);
+          expect(f.rightNeighbour).to.be.equal(h);
+          expect(g.rightNeighbour).to.be.equal(i);
+          expect(h.rightNeighbour).to.be.equal(j);
+          expect(i.rightNeighbour).to.be.equal(j);
+          expect(j.rightNeighbour).to.be.equal(null);
+
+          expect(e.leftNeighbour).to.be.equal(null);
+          expect(f.leftNeighbour).to.be.equal(e);
+          expect(g.leftNeighbour).to.be.equal(e);
+          expect(h.leftNeighbour).to.be.equal(f);
+          expect(i.leftNeighbour).to.be.equal(f);
+          expect(j.leftNeighbour).to.be.equal(h);
+        });
+        test('dashboard should respect given width and adjust other tiles', function() {
+          var element = fixture('multipleRowWithWidth');
+          var k = document.getElementById("tileK");
+          var l = document.getElementById("tileL");
+          var m = document.getElementById("tileM");
+          var n = document.getElementById("tileN");
+          var o = document.getElementById("tileO");
+          var p = document.getElementById("tileP");
+
+          expect(window.getComputedStyle(k,null).getPropertyValue("width")).to.be.equal("40px");
+          expect(window.getComputedStyle(l,null).getPropertyValue("width")).to.be.equal("160px");
+          expect(window.getComputedStyle(m,null).getPropertyValue("width")).to.be.equal("160px");
+          expect(window.getComputedStyle(n,null).getPropertyValue("width")).to.be.equal("160px");
+          expect(window.getComputedStyle(o,null).getPropertyValue("width")).to.be.equal("160px");
+          expect(window.getComputedStyle(p,null).getPropertyValue("width")).to.be.equal("40px");
         });
       });
     </script>

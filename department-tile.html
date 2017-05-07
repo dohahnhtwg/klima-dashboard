@@ -12,6 +12,8 @@ tile with department info's
     <style>
       :host {
         display: block;
+        height: 100%;
+        width: 100%;
       }
       .flex {
         @apply(--layout-horizontal);
@@ -24,6 +26,19 @@ tile with department info's
         height: 25px;
         width: 150px;
       }
+      table {
+        border: 0;
+        border-collapse: separate;
+        border-spacing: 0 5px;
+        text-align: left;
+        width:100%;
+        height:100%;
+      }
+      thead tr th {
+        border-bottom: 1px solid grey;
+        border-collapse: separate;
+        border-spacing: 5px 5px;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -32,7 +47,55 @@ tile with department info's
       on-error="handleError">
     </iron-ajax>
     <div>[[name]]</div>
-    <div class="flex">
+    <table>
+      <thead>
+        <tr>
+          <th>Aktuelle Informationen</th>
+          <th>Gewinner der Leistungen</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div>Deckungsbeitrag: [[_actualValue(contributionMargin)]] €</div>
+            <google-chart class="spark"
+              type="line"
+              data="[[contributionMargin]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td rowspan="3">
+            <div>
+              <google-chart type="bar" style="width: 100%; height: 100%;"
+                data='[[profitPerDrg]]'
+                options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"format": "#€"}}'>
+              </google-chart>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>Belgungsgrad: [[_actualValue(occupancyRate)]] %</div>
+            <google-chart class="spark"
+              type="line"
+              data='[[occupancyRate]]'
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div>Qualität: [[_actualValue(quality)]]</div>
+            <google-chart class="spark"
+              type="line"
+              data='[[quality]]'
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <!-- <div class="flex">
       <div class="column">
         <div>Aktuelle Informationen</div>
       </div>
@@ -43,19 +106,19 @@ tile with department info's
     <hr>
     <div class="flex">
       <div class="column">
-        <div>Deckungsbeitrag: 1.803.143 €</div>
+        <div>Deckungsbeitrag: [[_actualValue(contributionMargin)]] €</div>
         <google-chart class="spark"
           type="line"
           data="[[contributionMargin]]"
           options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
         </google-chart>
-        <div>Belgungsgrad: 75 %</div>
+        <div>Belgungsgrad: [[_actualValue(occupancyRate)]] %</div>
         <google-chart class="spark"
           type="line"
           data='[[occupancyRate]]'
           options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
         </google-chart>
-        <div>Qualität: 55</div>
+        <div>Qualität: [[_actualValue(quality)]]</div>
         <google-chart class="spark"
           type="line"
           data='[[quality]]'
@@ -70,7 +133,7 @@ tile with department info's
           </google-chart>
         </div>
       </div>
-    </div>
+    </div> -->
   </template>
 
   <script>
@@ -130,6 +193,9 @@ tile with department info's
           barData.push([profitPerDrg[i].name, profitPerDrg[i].profit]);
         }
         return barData;
+      },
+      _actualValue: function(array) {
+        return array[array.length-1];
       }
     });
   </script>

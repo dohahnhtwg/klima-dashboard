@@ -5,6 +5,8 @@
 <link rel="import" href="./department-tile.html">
 <link rel="import" href="./functional-central-tile.html">
 <link rel="import" href="./info-tile.html">
+<link rel="import" href="./key-metrics-tile.html">
+<link rel="import" href="./objectives-tile.html">
 <!--
 `klima-dashboard-page`
 dashboard page
@@ -28,8 +30,12 @@ dashboard page
     </style>
     <h1>KLIMA Dashboard</h1>
     <klima-dashboard border-width="4" id="dashboard">
-      <klima-dashboard-tile class="tile" row="1" positions="[1]">A</klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="1" positions="[2]">B</klima-dashboard-tile>
+      <klima-dashboard-tile class="tile" row="1" positions="[1]">
+        <key-metrics-tile source-url="http://127.0.0.1:8081/json/dashboard/keyMetrics.json"></key-metrics-tile>
+      </klima-dashboard-tile>
+      <klima-dashboard-tile class="tile" row="1" positions="[2]">
+        <objectives-tile source-url="http://127.0.0.1:8081/json/dashboard/objectives.json"></objectives-tile>
+      </klima-dashboard-tile>
       <klima-dashboard-tile class="tile" row="2" positions="[1]">
         <department-tile source-url="http://127.0.0.1:8081/json/dashboard/department/internalMedicine.json"></department-tile>
       </klima-dashboard-tile>

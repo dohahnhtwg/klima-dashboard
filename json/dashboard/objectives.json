@@ -1,0 +1,20 @@
+{
+  "ranking": 3,
+  "objectives": [
+    {
+      "name": "Hoher Überschuss",
+      "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
+      "bestPlayer": 6498193
+    },
+    {
+      "name": "Hoher Belegungsgrad",
+      "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
+      "bestPlayer": 4858808
+    },
+    {
+      "name": "Geringe Bettenverschwendung",
+      "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
+      "bestPlayer": 5446441
+    }
+  ]
+}

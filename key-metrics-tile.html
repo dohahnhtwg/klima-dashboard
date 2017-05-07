@@ -1,0 +1,221 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-chart/google-chart.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+<!--
+`key-metrics-tile`
+tile with key metrics
+
+-->
+
+<dom-module id="key-metrics-tile">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+      }
+      .column {
+        width: 50%;
+      }
+      .spark {
+        height: 25px;
+        width: 150px;
+      }
+      table {
+        border: 0;
+        border-collapse: separate;
+        border-spacing: 0 5px;
+        text-align: left;
+        width:100%;
+        height:90%;
+      }
+      thead tr th {
+        border-bottom: 1px solid grey;
+        border-collapse: separate;
+        border-spacing: 5px 5px;
+      }
+      .growthContainer {
+        background-color: #EEEEEE;
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+      .progress {
+        width: 100px;
+        height: 20px;
+      }
+      .positiveR {
+        --paper-progress-container-color: #7baaf7;
+      }
+      .negativeL {
+        --paper-progress-container-color: #3367d6;
+        --paper-progress-active-color: #7baaf7;
+      }
+    </style>
+    <iron-ajax id="ajax"
+      auto
+      handle-as="json"
+      on-response="handleResponse"
+      on-error="handleError">
+    </iron-ajax>
+    <div>Key Metriken</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Vergangene 5 Perioden</th>
+          <th>Metrik</th>
+          <th>Wachstum in Prozent</th>
+          <th>Aktuell</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[contributionMargin]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Deckungsbeiträge</td>
+          <td>
+            <div class="growthContainer">
+              <paper-progress class="progress negativeL" value="50"></paper-progress>
+              <paper-progress class="progress positiveR" value="0"></paper-progress>
+            </div>
+          </td>
+          <td>[[_actualValue(contributionMargin)]]</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[centralAndFunctionalCosts]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Kosten Zentral- und Funktionsbereiche</td>
+          <td>
+            <div class="growthContainer">
+              <paper-progress class="progress negativeL" value="50"></paper-progress>
+              <paper-progress class="progress positiveR" value="0"></paper-progress>
+            </div>
+          </td>
+          <td>[[_actualValue(centralAndFunctionalCosts)]]</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[overplus]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Überschuss</td>
+          <td>
+            <div class="growthContainer">
+              <paper-progress class="progress negativeL" value="50"></paper-progress>
+              <paper-progress class="progress positiveR" value="0"></paper-progress>
+            </div>
+          </td>
+          <td>[[_actualValue(overplus)]]</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[occupancyRate]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Belegungsgrad</td>
+          <td>
+            <div class="growthContainer">
+              <paper-progress class="progress negativeL" value="50"></paper-progress>
+              <paper-progress class="progress positiveR" value="0"></paper-progress>
+            </div>
+          </td>
+          <td>[[_actualValue(occupancyRate)]]</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[quality]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Gesamtqualität</td>
+          <td>
+            <div class="growthContainer">
+              <paper-progress class="progress negativeL" value="50"></paper-progress>
+              <paper-progress class="progress positiveR" value="0"></paper-progress>
+            </div>
+          </td>
+          <td>[[_actualValue(quality)]]</td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'key-metrics-tile',
+      properties: {
+        sourceUrl: {
+          type: String
+        },
+        contributionMargin: {
+          type: Array
+        },
+        centralAndFunctionalCosts: {
+          type: Array
+        },
+        overplus: {
+          type: Array
+        },
+        occupancyRate: {
+          type: Array
+        },
+        quality: {
+          type: Array
+        }
+      },
+      ready: function() {
+        if(this.sourceUrl != null) {
+          this.$.ajax.url = this.sourceUrl;
+        } else {
+          this.handleError()
+        }
+      },
+      handleResponse: function(e) {
+        this._processData(e.detail.response);
+      },
+      handleError: function() {
+        console.warn("No Data");
+      },
+      _processData: function(keyMetricData) {
+        this.contributionMargin = this._buildDataForSpark(keyMetricData.contributionMargin);
+        this.centralAndFunctionalCosts = this._buildDataForSpark(keyMetricData.centralAndFunctionalCosts);
+        this.overplus = this._buildDataForSpark(keyMetricData.overplus);
+        this.occupancyRate = this._buildDataForSpark(keyMetricData.occupancyRate);
+        this.quality = this._buildDataForSpark(keyMetricData.quality);
+      },
+      _buildDataForSpark: function(arrayWithData) {
+        sparkData = [["Periode", ""]];
+        for(var i=0; i < arrayWithData.length; i++) {
+          sparkData.push([i.toString(), arrayWithData[i]]);
+        }
+        return sparkData;
+      },
+      _actualValue: function(array) {
+        return array[array.length-1];
+      }
+    });
+  </script>
+</dom-module>

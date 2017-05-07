@@ -1,0 +1,142 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../google-chart/google-chart.html">
+<link rel="import" href="../iron-ajax/iron-ajax.html">
+<!--
+`key-metrics-tile`
+tile with key metrics
+
+-->
+
+<dom-module id="objectives-tile">
+  <template>
+    <style>
+      :host {
+        display: block;
+        height: 100%;
+        width: 100%;
+      }
+      .flex {
+        @apply(--layout-horizontal);
+        @apply(--layout-around-justified);
+      }
+      .column {
+        width: 50%;
+      }
+      .spark {
+        height: 25px;
+        width: 150px;
+      }
+      table {
+        border: 0;
+        border-collapse: separate;
+        border-spacing: 0 5px;
+        text-align: left;
+        width:100%;
+        height:70%;
+      }
+      thead tr th {
+        border-bottom: 1px solid grey;
+        border-collapse: separate;
+        border-spacing: 5px 5px;
+      }
+    </style>
+    <iron-ajax id="ajax"
+      auto
+      handle-as="json"
+      on-response="handleResponse"
+      on-error="handleError">
+    </iron-ajax>
+    <div>Ziele</div>
+    <h3>Gesamtplatzierung [[ranking]]</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Vergangene 5 Perioden</th>
+          <th>Ziel</th>
+          <th>Fortschritt</th>
+          <th>Aktuell</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[objective1.pastPeriods]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>[[objective1.name]]</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[objective2.pastPeriods]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>[[objective2.name]]</td>
+          <td></td>
+          <td></td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[objective3.pastPeriods]]"
+              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>[[objective3.name]]</td>
+          <td></td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'objectives-tile',
+      properties: {
+        sourceUrl: {
+          type: String
+        },
+        ranking: {
+          type: Number
+        },
+        objective1: {
+          type: Object,
+          value: function() {return {};}
+        },
+        objective2: {
+          type: Object,
+          value: function() {return {};}
+        },
+        objective3: {
+          type: Object,
+          value: function() {return {};}
+        }
+      },
+      ready: function() {
+        if(this.sourceUrl != null) {
+          this.$.ajax.url = this.sourceUrl;
+        } else {
+          this.handleError()
+        }
+      },
+      handleResponse: function(e) {
+        this._processData(e.detail.response);
+      },
+      handleError: function() {
+        console.warn("No Data");
+      },
+      _processData: function(objData) {
+        this.ranking = objData.ranking;
+      }
+    });
+  </script>
+</dom-module>

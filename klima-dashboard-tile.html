@@ -12,6 +12,8 @@ tile of klima-dashboard
       :host {
         display: block;
         position: absolute;
+        border-style: solid;
+        box-sizing: border-box;
       }
     </style>
     <content></content>
@@ -48,6 +50,13 @@ tile of klima-dashboard
           value: false
         }
       },
+      setBorder: function(top, right, bottom, left, color) {
+        this.style.borderTopWidth = top;
+        this.style.borderRightWidth = right;
+        this.style.borderBottomWidth = bottom;
+        this.style.borderLeftWidth = left;
+        this.style.borderColor = color;
+      }
     });
   </script>
 </dom-module>

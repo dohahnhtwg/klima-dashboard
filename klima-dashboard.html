@@ -17,7 +17,6 @@ dashboard
         position: relative;
         width: var(--klima-dashboard-width);
         height: var(--klima-dashboard-height);
-        border-style: solid;
       }
     </style>
     <div id="dashboard">
@@ -34,6 +33,14 @@ dashboard
           value: function() {
             return new Map();
           }
+        },
+        borderWidth: {
+          type: Number,
+          value: 0
+        },
+        borderColor: {
+          type: String,
+          value: '#3F51B5'
         }
       },
 
@@ -42,6 +49,7 @@ dashboard
         this._sortDashboardMap();
         //this._printDashboard();
         this._drawDashboard();
+        this._setBorders();
       },
 
       _addTilesFromLightDomToDashboard: function() {
@@ -193,7 +201,6 @@ dashboard
         });
         this._fillRemainingSpaces();
       },
-
       _fillRemainingSpaces: function() {
         this.dashboardMap.forEach(function(tiles, k) {
           for(var i=0; i < tiles.length; i++) {
@@ -202,7 +209,6 @@ dashboard
                 var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
                 if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
                   var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
-                  console.log(tiles[i].innerText + " wants to asdjust " + tiles[i+1].innerText);
                   tiles[i+1].style.left = rightBorder + 'px';
                   tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
                 }
@@ -210,6 +216,22 @@ dashboard
             }
           }
         });
+      },
+      _setBorders: function() {
+        var numRows = this.dashboardMap.size;
+        var outerBorderWidth = this.borderWidth;
+        var innerBorderWidth = outerBorderWidth/2;
+        this.dashboardMap.forEach(function(tiles, k) {
+          for(var i=0; i < tiles.length; i++) {
+            if(k == tiles[i].row) {
+              var top = (k == 1 ? outerBorderWidth : innerBorderWidth);
+              var right = (i == tiles.length - 1 ? outerBorderWidth : innerBorderWidth);
+              var bottom = (k+tiles[i].overlap == numRows ? outerBorderWidth : innerBorderWidth);
+              var left = (i == 0 ? outerBorderWidth : innerBorderWidth);
+              tiles[i].setBorder(top+'px',right+'px',bottom+'px',left+'px',this.borderColor);
+            }
+          }
+        }.bind(this));
       }
     });
   </script>

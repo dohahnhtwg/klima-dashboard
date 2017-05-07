@@ -4,6 +4,7 @@
 <link rel="import" href="./klima-dashboard-tile.html">
 <link rel="import" href="./department-tile.html">
 <link rel="import" href="./functional-central-tile.html">
+<link rel="import" href="./info-tile.html">
 <!--
 `klima-dashboard-page`
 dashboard page
@@ -41,7 +42,9 @@ dashboard page
       <klima-dashboard-tile class="tile" row="3" positions="[1]">
         <functional-central-tile source-url="http://127.0.0.1:8081/json/dashboard/department/centralAndFunctional.json"></functional-central-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="3" positions="[2]">G</klima-dashboard-tile>
+      <klima-dashboard-tile class="tile" row="3" positions="[2]">
+        <info-tile source-url="http://127.0.0.1:8081/json/dashboard/info.json"></info-tile>
+      </klima-dashboard-tile>
     </klima-dashboard>
   </template>
 

@@ -39,6 +39,22 @@ tile with key metrics
         border-collapse: separate;
         border-spacing: 5px 5px;
       }
+      .knob {
+        position: absolute;
+        top: 50%;
+        margin-top: -5px;
+        margin-left: -2px;
+        left: 70%;
+        background-color: #152c5c;
+        width: 4px;
+        height: 10px;
+        z-index: 2;
+      }
+      .progress {
+        width: 100%;
+        --paper-progress-container-color: #7baaf7;
+        --paper-progress-active-color: #3367d6;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -67,8 +83,15 @@ tile with key metrics
             </google-chart>
           </td>
           <td>[[objective1.name]]</td>
-          <td></td>
-          <td></td>
+          <td>
+            <div style="position: relative">
+              <div class="knob"></div>
+              <paper-progress class="progress" value="70"></paper-progress>
+            </div>
+          </td>
+          <td>
+            [[_actualValue(objective1.pastPeriods)]]
+          </td>
         </tr>
         <tr>
           <td>
@@ -79,8 +102,15 @@ tile with key metrics
             </google-chart>
           </td>
           <td>[[objective2.name]]</td>
-          <td></td>
-          <td></td>
+          <td>
+            <div style="position: relative">
+              <div class="knob"></div>
+              <paper-progress class="progress" value="70"></paper-progress>
+            </div>
+          </td>
+          <td>
+            [[_actualValue(objective2.pastPeriods)]]
+          </td>
         </tr>
         <tr>
           <td>
@@ -91,8 +121,15 @@ tile with key metrics
             </google-chart>
           </td>
           <td>[[objective3.name]]</td>
-          <td></td>
-          <td></td>
+          <td>
+            <div style="position: relative">
+              <div class="knob"></div>
+              <paper-progress class="progress" value="70"></paper-progress>
+            </div>
+          </td>
+          <td>
+            [[_actualValue(objective3.pastPeriods)]]
+          </td>
         </tr>
       </tbody>
     </table>
@@ -109,16 +146,13 @@ tile with key metrics
           type: Number
         },
         objective1: {
-          type: Object,
-          value: function() {return {};}
+          type: Object
         },
         objective2: {
-          type: Object,
-          value: function() {return {};}
+          type: Object
         },
         objective3: {
-          type: Object,
-          value: function() {return {};}
+          type: Object
         }
       },
       ready: function() {
@@ -136,6 +170,25 @@ tile with key metrics
       },
       _processData: function(objData) {
         this.ranking = objData.ranking;
+        this.objective1 = this._getObjective(objData.objectives[0]);
+        this.objective2 = this._getObjective(objData.objectives[1]);
+        this.objective3 = this._getObjective(objData.objectives[2]);
+      },
+      _getObjective: function(objData) {
+        var objective = {name: objData.name};
+        objective.pastPeriods = this._buildDataForSpark(objData.pastPeriods);
+        objective.bestPlayer = objData.bestPlayer;
+        return objective;
+      },
+      _buildDataForSpark: function(arrayWithData) {
+        sparkData = [["Periode", ""]];
+        for(var i=0; i < arrayWithData.length; i++) {
+          sparkData.push([i.toString(), arrayWithData[i]]);
+        }
+        return sparkData;
+      },
+      _actualValue: function(array) {
+        return array[array.length-1];
       }
     });
   </script>

@@ -1,0 +1,71 @@
+<link rel="import" href="../polymer/polymer.html">
+<!--
+`growth-bar`
+
+-->
+
+<dom-module id="growth-bar">
+  <template>
+    <style>
+      :host: {
+        display: block;
+      }
+      .growthContainer {
+        @apply(--layout-horizontal);
+        @apply(--layout-center);
+      }
+      .positiveR {
+        --paper-progress-container-color: #7baaf7;
+        --paper-progress-active-color: #3367d6;
+      }
+      .negativeL {
+        --paper-progress-container-color: #3367d6;
+        --paper-progress-active-color: #7baaf7;
+      }
+      .progress {
+        width: 50%;
+      }
+    </style>
+    <div class="growthContainer">
+      <paper-progress class="progress negativeL" value="[[negativeVal]]"></paper-progress>
+      <paper-progress class="progress positiveR" value="[[positiveVal]]"></paper-progress>
+    </div>
+  </template>
+  <script>
+    Polymer({
+      is: 'growth-bar',
+      properties: {
+        max: {
+          type: Number,
+          value: 100
+        },
+        min: {
+          type: Number,
+          value: -100
+        },
+        value: {
+          type: Number,
+          value: 0,
+          observer: '_valueChanged'
+        },
+        negativeVal: {
+          type: Number,
+          value: 100
+        },
+        positiveVal: {
+          type: Number,
+          value: 0
+        }
+      },
+      _valueChanged: function(newValue) {
+        if(newValue < 0) {
+          this.negativeVal = 100 - (100*newValue/this.min);
+          this.positiveVal = 0;
+        } else {
+          this.positiveVal = (100*newValue/this.max);
+          this.negativeVal = 100;
+        }
+      }
+    });
+  </script>
+</dom-module>

@@ -3,6 +3,7 @@
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
 <link rel="import" href="./shared-tile-styles.html">
+<link rel="import" href="./growth-bar.html">
 <!--
 `key-metrics-tile`
 tile with key metrics
@@ -30,10 +31,6 @@ tile with key metrics
         border-collapse: separate;
         border-spacing: 5px 5px;
       }
-      .growthContainer {
-        @apply(--layout-horizontal);
-        @apply(--layout-center);
-      }
       .progress {
         height: 20px;
       }
@@ -55,6 +52,9 @@ tile with key metrics
       .scaleRow {
         height: 10%;
       }
+      .growthBar {
+        width: 80%;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -65,6 +65,12 @@ tile with key metrics
     <div >
       <h3 class="caption">Key Metriken</h3>
       <table >
+        <colgroup>
+           <col span="1" style="width: 30%;">
+           <col span="1" style="width: 20%;">
+           <col span="1" style="width: 30%;">
+           <col span="1" style="width: 20%;">
+        </colgroup>
         <thead>
           <tr>
             <th>Vergangene 5 Perioden</th>
@@ -84,12 +90,11 @@ tile with key metrics
             </td>
             <td>Deckungsbeiträge</td>
             <td>
-              <div class="growthContainer">
-                <paper-progress class="progress negativeL" value="50"></paper-progress>
-                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              <div class="growthBar">
+                <growth-bar value="-18" min="-25" max="25"></growth-bar>
               </div>
             </td>
-            <td>[[_actualValue(contributionMargin)]]</td>
+            <td>[[_actualValue(contributionMargin)]] €</td>
           </tr>
           <tr>
             <td>
@@ -101,12 +106,11 @@ tile with key metrics
             </td>
             <td>Kosten Zentral- und Funktionsbereiche</td>
             <td>
-              <div class="growthContainer">
-                <paper-progress class="progress negativeL" value="50"></paper-progress>
-                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              <div class="growthBar">
+                <growth-bar value="-18" min="-25" max="25"></growth-bar>
               </div>
             </td>
-            <td>[[_actualValue(centralAndFunctionalCosts)]]</td>
+            <td>[[_actualValue(centralAndFunctionalCosts)]] €</td>
           </tr>
           <tr>
             <td>
@@ -118,12 +122,11 @@ tile with key metrics
             </td>
             <td>Überschuss</td>
             <td>
-              <div class="growthContainer">
-                <paper-progress class="progress negativeL" value="50"></paper-progress>
-                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              <div class="growthBar">
+                <growth-bar value="-18" min="-25" max="25"></growth-bar>
               </div>
             </td>
-            <td>[[_actualValue(overplus)]]</td>
+            <td>[[_actualValue(overplus)]] €</td>
           </tr>
           <tr>
             <td>
@@ -135,12 +138,11 @@ tile with key metrics
             </td>
             <td>Belegungsgrad</td>
             <td>
-              <div class="growthContainer">
-                <paper-progress class="progress negativeL" value="50"></paper-progress>
-                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              <div class="growthBar">
+                <growth-bar value="-18" min="-25" max="25"></growth-bar>
               </div>
             </td>
-            <td>[[_actualValue(occupancyRate)]]</td>
+            <td>[[_actualValue(occupancyRate)]] €</td>
           </tr>
           <tr>
             <td>
@@ -152,18 +154,17 @@ tile with key metrics
             </td>
             <td>Gesamtqualität</td>
             <td>
-              <div class="growthContainer">
-                <paper-progress class="progress negativeL" value="50"></paper-progress>
-                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              <div class="growthBar">
+                <growth-bar value="-18" min="-25" max="25"></growth-bar>
               </div>
             </td>
-            <td>[[_actualValue(quality)]]</td>
+            <td>[[_actualValue(quality)]] €</td>
           </tr>
           <tr class="scaleRow">
             <td></td>
             <td></td>
             <td>
-              <div class="scaleContainer" style="font-size: 75%;">
+              <div class="scaleContainer growthBar" style="font-size: 75%;">
                 <div>-25%</div>
                 <div>0%</div>
                 <div>25%</div>

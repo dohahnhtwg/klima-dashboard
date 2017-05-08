@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../google-chart/google-chart.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="./shared-tile-styles.html">
 <!--
 `department-tile`
 tile with functional and central departments info's
@@ -9,7 +10,7 @@ tile with functional and central departments info's
 
 <dom-module id="functional-central-tile">
   <template>
-    <style>
+    <style include="shared-tile-styles">
       :host {
         display: block;
         height: 100%;
@@ -19,10 +20,6 @@ tile with functional and central departments info's
         @apply(--layout-horizontal);
         @apply(--layout-around-justified);
 
-      }
-      .spark {
-        height: 25px;
-        width: 150px;
       }
       table {
         border: 0;
@@ -45,8 +42,8 @@ tile with functional and central departments info's
       on-error="handleError">
     </iron-ajax>
     <div class="horizontal">
-      <div>Zentralbereiche</div>
-      <div>Funktionsbereiche</div>
+      <h3 class="caption">Zentralbereiche</h3>
+      <h3 class="caption">Funktionsbereiche</h3>
     </div>
     <table>
       <thead>

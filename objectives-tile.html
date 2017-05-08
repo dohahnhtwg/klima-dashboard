@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../google-chart/google-chart.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="./shared-tile-styles.html">
 <!--
 `key-metrics-tile`
 tile with key metrics
@@ -9,7 +10,7 @@ tile with key metrics
 
 <dom-module id="objectives-tile">
   <template>
-    <style>
+    <style include="shared-tile-styles">
       :host {
         display: block;
         height: 100%;
@@ -18,13 +19,6 @@ tile with key metrics
       .flex {
         @apply(--layout-horizontal);
         @apply(--layout-around-justified);
-      }
-      .column {
-        width: 50%;
-      }
-      .spark {
-        height: 25px;
-        width: 150px;
       }
       table {
         border: 0;
@@ -62,7 +56,7 @@ tile with key metrics
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <div>Ziele</div>
+    <h3 class="caption">Ziele</h3>
     <h3>Gesamtplatzierung [[ranking]]</h3>
     <table>
       <thead>

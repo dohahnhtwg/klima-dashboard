@@ -1,6 +1,7 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../google-chart/google-chart.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="./shared-tile-styles.html">
 <!--
 `department-tile`
 tile with department info's
@@ -9,7 +10,7 @@ tile with department info's
 
 <dom-module id="department-tile">
   <template>
-    <style>
+    <style include="shared-tile-styles">
       :host {
         display: block;
         height: 100%;
@@ -18,13 +19,6 @@ tile with department info's
       .flex {
         @apply(--layout-horizontal);
         @apply(--layout-around-justified);
-      }
-      .column {
-        width: 50%;
-      }
-      .spark {
-        height: 25px;
-        width: 150px;
       }
       table {
         border: 0;
@@ -46,7 +40,7 @@ tile with department info's
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <div>[[name]]</div>
+    <h3 class="caption">[[name]]</h3>
     <table>
       <thead>
         <tr>

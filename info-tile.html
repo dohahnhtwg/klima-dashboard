@@ -1,5 +1,6 @@
 <link rel="import" href="../polymer/polymer.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
+<link rel="import" href="./shared-tile-styles.html">
 <!--
 `info-tile`
 tile with infos from gamemaster
@@ -8,7 +9,7 @@ tile with infos from gamemaster
 
 <dom-module id="info-tile">
   <template>
-    <style>
+    <style include="shared-tile-styles">
       :host {
         display: block;
         height: 100%;
@@ -37,7 +38,11 @@ tile with infos from gamemaster
     <table>
       <thead>
         <tr>
-          <th>Aktuelle Informationen</th>
+          <th>
+            <h3 class="caption">
+              Aktuelle Informationen
+            </h3>
+          </th>
         </tr>
       </thead>
       <tbody>

@@ -28,6 +28,9 @@ tile with infos from gamemaster
         border-collapse: separate;
         border-spacing: 5px 5px;
       }
+      .infoContainer {
+        margin: 5%;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -39,16 +42,21 @@ tile with infos from gamemaster
       <thead>
         <tr>
           <th>
-            <h3 class="caption">
-              Aktuelle Informationen
-            </h3>
+            <div class="headerContainer">
+              <h3 class="caption">Aktuelle Informationen</h3>
+              <div class="alignRight">
+                <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
+              </div>
+            </div>
           </th>
         </tr>
       </thead>
       <tbody>
         <tr>
           <td>
-            [[info]]
+            <div class="infoContainer">
+              [[info]]
+            </div>
           </td>
         </tr>
       </tbody>

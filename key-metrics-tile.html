@@ -2,6 +2,8 @@
 <link rel="import" href="../google-chart/google-chart.html">
 <link rel="import" href="../iron-ajax/iron-ajax.html">
 <link rel="import" href="../paper-progress/paper-progress.html">
+<link rel="import" href="../iron-icon/iron-icon.html">
+<link rel="import" href="../iron-icons/iron-icons.html">
 <link rel="import" href="./shared-tile-styles.html">
 <link rel="import" href="./growth-bar.html">
 <!--
@@ -23,7 +25,8 @@ tile with key metrics
         border-collapse: separate;
         border-spacing: 0 5px;
         text-align: left;
-        width:100%;
+        width: 100%;
+        height: 100%;
       }
       thead tr th {
         font-weight: normal;
@@ -55,6 +58,13 @@ tile with key metrics
       .growthBar {
         width: 80%;
       }
+      .headerContainer {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      .alignRight {
+        @apply(--layout-self-stretch);
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -62,119 +72,120 @@ tile with key metrics
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <div >
+    <div class="headerContainer">
       <h3 class="caption">Key Metriken</h3>
-      <table >
-        <colgroup>
-           <col span="1" style="width: 30%;">
-           <col span="1" style="width: 20%;">
-           <col span="1" style="width: 30%;">
-           <col span="1" style="width: 20%;">
-        </colgroup>
-        <thead>
-          <tr>
-            <th>Vergangene 5 Perioden</th>
-            <th>Metrik</th>
-            <th>Wachstum in Prozent</th>
-            <th>Aktuell</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>
-              <google-chart class="spark"
-                type="line"
-                data="[[contributionMargin]]"
-                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-              </google-chart>
-            </td>
-            <td>Deckungsbeiträge</td>
-            <td>
-              <div class="growthBar">
-                <growth-bar value="-18" min="-25" max="25"></growth-bar>
-              </div>
-            </td>
-            <td>[[_actualValue(contributionMargin)]] €</td>
-          </tr>
-          <tr>
-            <td>
-              <google-chart class="spark"
-                type="line"
-                data="[[centralAndFunctionalCosts]]"
-                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-              </google-chart>
-            </td>
-            <td>Kosten Zentral- und Funktionsbereiche</td>
-            <td>
-              <div class="growthBar">
-                <growth-bar value="-18" min="-25" max="25"></growth-bar>
-              </div>
-            </td>
-            <td>[[_actualValue(centralAndFunctionalCosts)]] €</td>
-          </tr>
-          <tr>
-            <td>
-              <google-chart class="spark"
-                type="line"
-                data="[[overplus]]"
-                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-              </google-chart>
-            </td>
-            <td>Überschuss</td>
-            <td>
-              <div class="growthBar">
-                <growth-bar value="-18" min="-25" max="25"></growth-bar>
-              </div>
-            </td>
-            <td>[[_actualValue(overplus)]] €</td>
-          </tr>
-          <tr>
-            <td>
-              <google-chart class="spark"
-                type="line"
-                data="[[occupancyRate]]"
-                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-              </google-chart>
-            </td>
-            <td>Belegungsgrad</td>
-            <td>
-              <div class="growthBar">
-                <growth-bar value="-18" min="-25" max="25"></growth-bar>
-              </div>
-            </td>
-            <td>[[_actualValue(occupancyRate)]] €</td>
-          </tr>
-          <tr>
-            <td>
-              <google-chart class="spark"
-                type="line"
-                data="[[quality]]"
-                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-              </google-chart>
-            </td>
-            <td>Gesamtqualität</td>
-            <td>
-              <div class="growthBar">
-                <growth-bar value="-18" min="-25" max="25"></growth-bar>
-              </div>
-            </td>
-            <td>[[_actualValue(quality)]] €</td>
-          </tr>
-          <tr class="scaleRow">
-            <td></td>
-            <td></td>
-            <td>
-              <div class="scaleContainer growthBar" style="font-size: 75%;">
-                <div>-25%</div>
-                <div>0%</div>
-                <div>25%</div>
-              </div>
-            </td>
-            <td></td>
-          </tr>
-        </tbody>
-      </table>
+      <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
     </div>
+    <table>
+      <colgroup>
+         <col span="1" style="width: 30%;">
+         <col span="1" style="width: 25%;">
+         <col span="1" style="width: 30%;">
+         <col span="1" style="width: 15%;">
+      </colgroup>
+      <thead>
+        <tr>
+          <th>Vergangene 5 Perioden</th>
+          <th>Metrik</th>
+          <th>Wachstum in Prozent</th>
+          <th>Aktuell</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[contributionMargin]]"
+              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Deckungsbeiträge</td>
+          <td>
+            <div class="growthBar">
+              <growth-bar value="-18" min="-25" max="25"></growth-bar>
+            </div>
+          </td>
+          <td>[[_actualValue(contributionMargin)]] €</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[centralAndFunctionalCosts]]"
+              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Kosten Zentral- und Funktionsbereiche</td>
+          <td>
+            <div class="growthBar">
+              <growth-bar value="-18" min="-25" max="25"></growth-bar>
+            </div>
+          </td>
+          <td>[[_actualValue(centralAndFunctionalCosts)]] €</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[overplus]]"
+              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Überschuss</td>
+          <td>
+            <div class="growthBar">
+              <growth-bar value="-18" min="-25" max="25"></growth-bar>
+            </div>
+          </td>
+          <td>[[_actualValue(overplus)]] €</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[occupancyRate]]"
+              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Belegungsgrad</td>
+          <td>
+            <div class="growthBar">
+              <growth-bar value="-18" min="-25" max="25"></growth-bar>
+            </div>
+          </td>
+          <td>[[_actualValue(occupancyRate)]] €</td>
+        </tr>
+        <tr>
+          <td>
+            <google-chart class="spark"
+              type="line"
+              data="[[quality]]"
+              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+            </google-chart>
+          </td>
+          <td>Gesamtqualität</td>
+          <td>
+            <div class="growthBar">
+              <growth-bar value="-18" min="-25" max="25"></growth-bar>
+            </div>
+          </td>
+          <td>[[_actualValue(quality)]] €</td>
+        </tr>
+        <tr class="scaleRow">
+          <td></td>
+          <td></td>
+          <td>
+            <div class="scaleContainer growthBar" style="font-size: 75%;">
+              <div>-25%</div>
+              <div>0%</div>
+              <div>25%</div>
+            </div>
+          </td>
+          <td></td>
+        </tr>
+      </tbody>
+    </table>
   </template>
 
   <script>

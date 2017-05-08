@@ -26,12 +26,31 @@ tile with department info's
         border-spacing: 0 5px;
         text-align: left;
         width:100%;
-        height:100%;
+        height:70%;
       }
       thead tr th {
+        font-weight: normal;
         border-bottom: 1px solid grey;
         border-collapse: separate;
         border-spacing: 5px 5px;
+      }
+      .headerContainer {
+        height: 10%;
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      .alignRight {
+        @apply(--layout-self-stretch);
+      }
+      .legend {
+        display: inline-block;
+        width: 5px;
+        height: 12px;
+      }
+      .sparkContainer {
+        height: 40px;
+        margin-top: -15px;
+        margin-bottom: -15px
       }
     </style>
     <iron-ajax id="ajax"
@@ -40,8 +59,17 @@ tile with department info's
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <h3 class="caption">[[name]]</h3>
+    <div class="headerContainer">
+      <h3 class="caption">[[name]]</h3>
+      <div class="alignRight">
+        <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
+      </div>
+    </div>
     <table>
+      <colgroup>
+         <col span="1" style="width: 40%;">
+         <col span="1" style="width: 60%;">
+      </colgroup>
       <thead>
         <tr>
           <th>Aktuelle Informationen</th>
@@ -51,14 +79,9 @@ tile with department info's
       <tbody>
         <tr>
           <td>
-            <div>Deckungsbeitrag: [[_actualValue(contributionMargin)]] €</div>
-            <google-chart class="spark"
-              type="line"
-              data="[[contributionMargin]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
+            <div style="height: 10px; font-size:90%;">Deckungsbeitrag: [[_actualValue(contributionMargin)]] €</div>
           </td>
-          <td rowspan="3">
+          <td rowspan="6">
             <div>
               <google-chart type="bar" style="width: 100%; height: 100%;"
                 data='[[profitPerDrg]]'
@@ -69,22 +92,45 @@ tile with department info's
         </tr>
         <tr>
           <td>
-            <div>Belgungsgrad: [[_actualValue(occupancyRate)]] %</div>
-            <google-chart class="spark"
-              type="line"
-              data='[[occupancyRate]]'
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
+            <div class="sparkContainer">
+              <google-chart class="spark"
+                type="line"
+                data="[[contributionMargin]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </div>
           </td>
         </tr>
         <tr>
           <td>
-            <div>Qualität: [[_actualValue(quality)]]</div>
-            <google-chart class="spark"
-              type="line"
-              data='[[quality]]'
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
+            <div style="height: 10px; font-size:90%;">Belgungsgrad: [[_actualValue(occupancyRate)]] %</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sparkContainer">
+              <google-chart class="spark"
+                type="line"
+                data='[[occupancyRate]]'
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div style="height: 10px; font-size:90%;">Qualität: [[_actualValue(quality)]]</div>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            <div class="sparkContainer">
+              <google-chart class="spark"
+                type="line"
+                data='[[quality]]'
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </div>
           </td>
         </tr>
       </tbody>

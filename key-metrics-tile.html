@@ -17,31 +17,43 @@ tile with key metrics
         height: 100%;
         width: 100%;
       }
-      .flex {
-        @apply(--layout-horizontal);
-        @apply(--layout-around-justified);
-      }
       table {
         border: 0;
         border-collapse: separate;
         border-spacing: 0 5px;
         text-align: left;
         width:100%;
-        height:90%;
       }
       thead tr th {
+        font-weight: normal;
         border-bottom: 1px solid grey;
         border-collapse: separate;
         border-spacing: 5px 5px;
       }
       .growthContainer {
-        background-color: #EEEEEE;
         @apply(--layout-horizontal);
         @apply(--layout-center);
       }
       .progress {
-        width: 100px;
         height: 20px;
+      }
+      .scaleContainer {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      .tileContainer {
+        height: 100%;
+        width: 100%;
+        @apply(--layout-vertical);
+      }
+      .flexchild {
+        @apply(--layout-flex);
+      }
+      td {
+        height: 18%;
+      }
+      .scaleRow {
+        height: 10%;
       }
     </style>
     <iron-ajax id="ajax"
@@ -50,104 +62,118 @@ tile with key metrics
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <h3 class="caption">Key Metriken</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Vergangene 5 Perioden</th>
-          <th>Metrik</th>
-          <th>Wachstum in Prozent</th>
-          <th>Aktuell</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[contributionMargin]]"
-              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Deckungsbeiträge</td>
-          <td>
-            <div class="growthContainer">
-              <paper-progress class="progress negativeL" value="50"></paper-progress>
-              <paper-progress class="progress positiveR" value="0"></paper-progress>
-            </div>
-          </td>
-          <td>[[_actualValue(contributionMargin)]]</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[centralAndFunctionalCosts]]"
-              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Kosten Zentral- und Funktionsbereiche</td>
-          <td>
-            <div class="growthContainer">
-              <paper-progress class="progress negativeL" value="50"></paper-progress>
-              <paper-progress class="progress positiveR" value="0"></paper-progress>
-            </div>
-          </td>
-          <td>[[_actualValue(centralAndFunctionalCosts)]]</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[overplus]]"
-              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Überschuss</td>
-          <td>
-            <div class="growthContainer">
-              <paper-progress class="progress negativeL" value="50"></paper-progress>
-              <paper-progress class="progress positiveR" value="0"></paper-progress>
-            </div>
-          </td>
-          <td>[[_actualValue(overplus)]]</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[occupancyRate]]"
-              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Belegungsgrad</td>
-          <td>
-            <div class="growthContainer">
-              <paper-progress class="progress negativeL" value="50"></paper-progress>
-              <paper-progress class="progress positiveR" value="0"></paper-progress>
-            </div>
-          </td>
-          <td>[[_actualValue(occupancyRate)]]</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[quality]]"
-              options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Gesamtqualität</td>
-          <td>
-            <div class="growthContainer">
-              <paper-progress class="progress negativeL" value="50"></paper-progress>
-              <paper-progress class="progress positiveR" value="0"></paper-progress>
-            </div>
-          </td>
-          <td>[[_actualValue(quality)]]</td>
-        </tr>
-      </tbody>
-    </table>
+    <div >
+      <h3 class="caption">Key Metriken</h3>
+      <table >
+        <thead>
+          <tr>
+            <th>Vergangene 5 Perioden</th>
+            <th>Metrik</th>
+            <th>Wachstum in Prozent</th>
+            <th>Aktuell</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[contributionMargin]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Deckungsbeiträge</td>
+            <td>
+              <div class="growthContainer">
+                <paper-progress class="progress negativeL" value="50"></paper-progress>
+                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              </div>
+            </td>
+            <td>[[_actualValue(contributionMargin)]]</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[centralAndFunctionalCosts]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Kosten Zentral- und Funktionsbereiche</td>
+            <td>
+              <div class="growthContainer">
+                <paper-progress class="progress negativeL" value="50"></paper-progress>
+                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              </div>
+            </td>
+            <td>[[_actualValue(centralAndFunctionalCosts)]]</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[overplus]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Überschuss</td>
+            <td>
+              <div class="growthContainer">
+                <paper-progress class="progress negativeL" value="50"></paper-progress>
+                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              </div>
+            </td>
+            <td>[[_actualValue(overplus)]]</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[occupancyRate]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Belegungsgrad</td>
+            <td>
+              <div class="growthContainer">
+                <paper-progress class="progress negativeL" value="50"></paper-progress>
+                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              </div>
+            </td>
+            <td>[[_actualValue(occupancyRate)]]</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[quality]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Gesamtqualität</td>
+            <td>
+              <div class="growthContainer">
+                <paper-progress class="progress negativeL" value="50"></paper-progress>
+                <paper-progress class="progress positiveR" value="0"></paper-progress>
+              </div>
+            </td>
+            <td>[[_actualValue(quality)]]</td>
+          </tr>
+          <tr class="scaleRow">
+            <td></td>
+            <td></td>
+            <td>
+              <div class="scaleContainer" style="font-size: 75%;">
+                <div>-25%</div>
+                <div>0%</div>
+                <div>25%</div>
+              </div>
+            </td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </template>
 
   <script>

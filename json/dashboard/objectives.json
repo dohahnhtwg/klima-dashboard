@@ -3,18 +3,27 @@
   "objectives": [
     {
       "name": "Hoher Überschuss",
+      "objectiveKey": "highOverPlus",
       "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
-      "bestPlayer": 6498193
+      "bestTeam": {
+        "name": "otherTeam",
+        "withValue": 6000000
+      }
     },
     {
       "name": "Hoher Belegungsgrad",
-      "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
-      "bestPlayer": 4858808
+      "objectiveKey": "highOccupancyLevel",
+      "pastPeriods": [40,50,70,66,60],
+      "bestTeam": null
     },
     {
       "name": "Geringe Bettenverschwendung",
-      "pastPeriods": [4858808,5446441,5453282,6498193,5941928],
-      "bestPlayer": 5446441
+      "objectiveKey": "lowWasteOfBeds",
+      "pastPeriods": [12,34,24,37,22],
+      "bestTeam": {
+        "name": "otherTeam",
+        "withValue": 13
+      }
     }
   ]
 }

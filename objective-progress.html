@@ -1,0 +1,86 @@
+<link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
+<link rel="import" href="../paper-progress/paper-progress.html">
+
+<dom-module id="objective-progress">
+  <template>
+    <style>
+      .progress {
+        width: 100%;
+        --paper-progress-container-color: #7baaf7;
+        --paper-progress-active-color: #3367d6;
+      }
+      .progressContainer {
+        position: relative;
+        width: 80%;
+      }
+      paper-tooltip {
+        --paper-tooltip-opacity: 1.0;
+      }
+      .knob {
+        display: none;
+        position: absolute;
+        top: 50%;
+        margin-top: -5px;
+        margin-left: -2px;
+        left: 70%;
+        background-color: #152c5c;
+        width: 4px;
+        height: 10px;
+        z-index: 2;
+        -webkit-transition: width height 2s;
+        transition: width height 2s;
+      }
+      .knob:hover {
+          width: 6px;
+          height: 14px;
+          margin-top: -7px;
+      }
+    </style>
+    <div class="progressContainer">
+      <div id="knob" class="knob"></div>
+      <paper-progress id="progress" class="progress" value="[[progressValue]]"></paper-progress>
+    </div>
+    <paper-tooltip for="progress" offset="0">[[actualValue]]</paper-tooltip>
+    <paper-tooltip for="knob" offset="0">
+      <div>Best Team: [[bestTeamName]] ([[bestTeamValue]])</div>
+    </paper-tooltip>
+  </template>
+  <script>
+  Polymer({
+    is: 'objective-progress',
+    properties: {
+      bestTeamValue: Number,
+      actualValue: Number,
+      bestTeamName: String,
+      progressValue: {
+        type: Number,
+        computed: '_computeProgress(actualValue, bestTeamValue)'
+      }
+    },
+    observers: [
+      '_updateKnob(actualValue, bestTeamValue)'
+    ],
+    _computeProgress: function(actualValue, bestTeamValue) {
+      var maxValue = this._getMaxValue(actualValue, bestTeamValue);
+      return Math.round((actualValue/maxValue)*100);
+    },
+    _getMaxValue: function(actualValue, bestTeam) {
+      var val = (actualValue > bestTeam ? actualValue : bestTeam);
+      var roundedVal = Math.round(Math.abs(val));
+      numLength = val.toString().length;
+      var nextVal = Math.pow(10, numLength);
+      return nextVal;
+    },
+    _updateKnob: function(actualValue, bestTeamValue) {
+      if(bestTeamValue == null) {
+        this.$.knob.style.display = 'none';
+      } else {
+        var maxValue = this._getMaxValue(actualValue, bestTeamValue);
+        this.$.knob.style.display = 'block';
+        this.$.knob.style.left = Math.round((bestTeamValue/maxValue)*100) + '%';
+      }
+    }
+  });
+  </script>
+</dom-module>

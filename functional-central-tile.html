@@ -33,6 +33,13 @@ tile with functional and central departments info's
         border-collapse: separate;
         border-spacing: 5px 5px;
       }
+      #noDataDiv {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -40,110 +47,115 @@ tile with functional and central departments info's
       on-response="handleResponse"
       on-error="handleError">
     </iron-ajax>
-    <div class="headerContainer">
-      <div style="width: 100%;" class="horizontal">
-        <h3 class="caption" style="width: 50%;">Zentralbereiche</h3>
-        <h3 class="caption">Funktionsbereiche</h3>
-      </div>
-      <div class="alignRight">
-        <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
-      </div>
+    <div id="noDataDiv" hidden$="{{dataAvailable}}">
+      <div>No Data Available</div>
     </div>
-    <table>
-      <colgroup>
-         <col span="1" style="width: 26%;">
-         <col span="1" style="width: 12%;">
-         <col span="1" style="width: 12%;">
-         <col span="1" style="width: 26%;">
-         <col span="1" style="width: 12%;">
-         <col span="1" style="width: 12%;">
-      </colgroup>
-      <thead>
-        <tr>
-          <th>Vergangene 5 Perioden</th>
-          <th>Bereich</th>
-          <th>Aktuell</th>
-          <th>Vergangene 5 Perioden</th>
-          <th>Bereich</th>
-          <th>Aktuell</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[kitchen]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Küche</td>
-          <td>[[_actualValue(kitchen)]] €</td>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[op]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>OP</td>
-          <td>[[_actualValue(op)]] €</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[cleaning]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Reinigung</td>
-          <td>[[_actualValue(cleaning)]] €</td>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[laboratory]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Labor</td>
-          <td>[[_actualValue(laboratory)]] €</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[laundry]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Wäscherei</td>
-          <td>[[_actualValue(laundry)]] €</td>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[otherFunctional]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart></td>
-          <td>Sonstige</td>
-          <td>[[_actualValue(otherFunctional)]] €</td>
-        </tr>
-        <tr>
-          <td>
-            <google-chart class="spark"
-              type="line"
-              data="[[otherCentral]]"
-              options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
-            </google-chart>
-          </td>
-          <td>Sonstige</td>
-          <td>[[_actualValue(otherCentral)]] €</td>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+    <div style="width: 100%; height: 100%;" hidden$="{{!dataAvailable}}">
+      <div class="headerContainer">
+        <div style="width: 100%;" class="horizontal">
+          <h3 class="caption" style="width: 50%;">Zentralbereiche</h3>
+          <h3 class="caption">Funktionsbereiche</h3>
+        </div>
+        <div class="alignRight">
+          <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
+        </div>
+      </div>
+      <table>
+        <colgroup>
+           <col span="1" style="width: 26%;">
+           <col span="1" style="width: 12%;">
+           <col span="1" style="width: 12%;">
+           <col span="1" style="width: 26%;">
+           <col span="1" style="width: 12%;">
+           <col span="1" style="width: 12%;">
+        </colgroup>
+        <thead>
+          <tr>
+            <th>Vergangene 5 Perioden</th>
+            <th>Bereich</th>
+            <th>Aktuell</th>
+            <th>Vergangene 5 Perioden</th>
+            <th>Bereich</th>
+            <th>Aktuell</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[kitchen]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Küche</td>
+            <td>[[_actualValue(kitchen)]] €</td>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[op]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>OP</td>
+            <td>[[_actualValue(op)]] €</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[cleaning]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Reinigung</td>
+            <td>[[_actualValue(cleaning)]] €</td>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[laboratory]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Labor</td>
+            <td>[[_actualValue(laboratory)]] €</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[laundry]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Wäscherei</td>
+            <td>[[_actualValue(laundry)]] €</td>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[otherFunctional]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart></td>
+            <td>Sonstige</td>
+            <td>[[_actualValue(otherFunctional)]] €</td>
+          </tr>
+          <tr>
+            <td>
+              <google-chart class="spark"
+                type="line"
+                data="[[otherCentral]]"
+                options='{"backgroundColor": {"fill": "transparent"}, "legend": {"position": "none"}, "hAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"},"vAxis": {"baselineColor": "none","ticks": [],"textPosition": "none"}}'>
+              </google-chart>
+            </td>
+            <td>Sonstige</td>
+            <td>[[_actualValue(otherCentral)]] €</td>
+            <td></td>
+            <td></td>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </template>
 
   <script>
@@ -173,6 +185,10 @@ tile with functional and central departments info's
         },
         laboratory: {
           type: Array
+        },
+        dataAvailable: {
+          type: Boolean,
+          value: false
         }
       },
       ready: function() {
@@ -184,9 +200,11 @@ tile with functional and central departments info's
       },
       handleResponse: function(e) {
         this._processData(e.detail.response);
+        this.dataAvailable = true;
       },
       handleError: function() {
         console.warn("No Data");
+        this.dataAvailable = false;
       },
       _processData: function(funcAndCentralData) {
         this.kitchen = this._buildDataForSpark(funcAndCentralData.kitchen);

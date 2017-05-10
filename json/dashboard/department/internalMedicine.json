@@ -5,10 +5,10 @@
   "quality": [4858808,5446441,5453282,6498193,5941928],
   "profitPerDrg": [
     {"name": "DFK1", "profit": 39657},
-    {"name": "DFK2", "profit": 60495},
-    {"name": "DFK3", "profit": 192380},
+    {"name": "DFK2", "profit": -60495},
+    {"name": "DFK3", "profit": -192380},
     {"name": "DFK4", "profit": 145121},
-    {"name": "DFK5", "profit": 128511},
+    {"name": "DFK5", "profit": -128511},
     {"name": "DFK6", "profit": 142608}
   ]
 }

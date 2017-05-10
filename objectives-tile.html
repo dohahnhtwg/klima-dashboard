@@ -4,6 +4,7 @@
 <link rel="import" href="./shared-tile-styles.html">
 <link rel="import" href="../iron-icon/iron-icon.html">
 <link rel="import" href="../iron-icons/iron-icons.html">
+<link rel="import" href="../paper-tooltip/paper-tooltip.html">
 <!--
 `key-metrics-tile`
 tile with key metrics
@@ -46,6 +47,13 @@ tile with key metrics
         width: 4px;
         height: 10px;
         z-index: 2;
+        -webkit-transition: width height 2s;
+        transition: width height 2s;
+      }
+      .knob:hover {
+          width: 6px;
+          height: 14px;
+          margin-top: -7px;
       }
       .progress {
         width: 100%;
@@ -60,6 +68,9 @@ tile with key metrics
       .progressContainer {
         position: relative;
         width: 80%;
+      }
+      paper-tooltip {
+        --paper-tooltip-opacity: 1.0;
       }
     </style>
     <iron-ajax id="ajax"
@@ -109,9 +120,13 @@ tile with key metrics
           <td>[[objective1.name]]</td>
           <td>
             <div class="progressContainer">
-              <div class="knob"></div>
-              <paper-progress class="progress" value="70"></paper-progress>
+              <div id="knob1" class="knob"></div>
+              <paper-progress id="progress1" class="progress" value="70"></paper-progress>
             </div>
+            <paper-tooltip for="progress1" offset="0">[[_actualValue(objective1.pastPeriods)]]</paper-tooltip>
+            <paper-tooltip for="knob1" offset="0">
+              <div>Best Team: Unknown ([[objective1.bestPlayer]])</div>
+            </paper-tooltip>
           </td>
           <td>
             [[_actualValue(objective1.pastPeriods)]]
@@ -128,9 +143,13 @@ tile with key metrics
           <td>[[objective2.name]]</td>
           <td>
             <div class="progressContainer">
-              <div class="knob"></div>
-              <paper-progress class="progress" value="70"></paper-progress>
+              <div id="knob2" class="knob"></div>
+              <paper-progress id="progressContainer2" class="progress" value="70"></paper-progress>
             </div>
+            <paper-tooltip for="progressContainer2" offset="0">[[_actualValue(objective2.pastPeriods)]]</paper-tooltip>
+            <paper-tooltip for="knob2" offset="0">
+              <div>Best Team: Unknown ([[objective2.bestPlayer]])</div>
+            </paper-tooltip>
           </td>
           <td>
             [[_actualValue(objective2.pastPeriods)]]
@@ -147,9 +166,13 @@ tile with key metrics
           <td>[[objective3.name]]</td>
           <td>
             <div class="progressContainer">
-              <div class="knob"></div>
-              <paper-progress class="progress" value="70"></paper-progress>
+              <div id="knob3" class="knob"></div>
+              <paper-progress id="progressContainer3" class="progress" value="70"></paper-progress>
             </div>
+            <paper-tooltip for="progressContainer3" offset="0">[[_actualValue(objective3.pastPeriods)]]</paper-tooltip>
+            <paper-tooltip for="knob3" offset="0">
+              <div>Best Team: Unknown ([[objective2.bestPlayer]])</div>
+            </paper-tooltip>
           </td>
           <td>
             [[_actualValue(objective3.pastPeriods)]]

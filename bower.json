@@ -5,7 +5,8 @@
   "dependencies": {
     "polymer": "Polymer/polymer#^1.4.0",
     "google-chart": "GoogleWebComponents/google-chart#^1.1.2",
-    "paper-progress": "PolymerElements/paper-progress#^1.0.12"
+    "paper-progress": "PolymerElements/paper-progress#^1.0.12",
+    "paper-tooltip": "PolymerElements/paper-tooltip#^1.1.4"
   },
   "devDependencies": {
     "iron-component-page": "PolymerElements/iron-component-page#^1.0.0",

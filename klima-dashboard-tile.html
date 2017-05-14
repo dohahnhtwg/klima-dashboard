@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-scroll-target-behavior/iron-scroll-target-behavior.html">
 
 <!--
 `klima-dashboard-tile`
@@ -16,7 +17,11 @@ tile of klima-dashboard
         box-sizing: border-box;
       }
     </style>
-    <content></content>
+      <div style="width: 100%;
+        height: 100%;
+        overflow: auto;">
+       <content></content>
+     </div>
   </template>
 
   <script>

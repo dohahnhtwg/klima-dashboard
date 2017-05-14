@@ -1,4 +1,5 @@
 <link rel="import" href="../polymer/polymer.html">
+<link rel="import" href="../iron-resizable-behavior/iron-resizable-behavior.html">
 
 <!--
 `klima-dashboard`
@@ -27,6 +28,12 @@ dashboard
   <script>
     Polymer({
       is: 'klima-dashboard',
+      behaviors: [
+        Polymer.IronResizableBehavior
+      ],
+      listeners: {
+        'iron-resize': '_onIronResize'
+      },
       properties: {
         dashboardMap: {
           type: Object,
@@ -41,9 +48,12 @@ dashboard
         borderColor: {
           type: String,
           value: '#3F51B5'
+        },
+        responsible: {
+          type: Boolean,
+          value: false
         }
       },
-
       attached: function() {
         this._addTilesFromLightDomToDashboard();
         this._sortDashboardMap();
@@ -147,7 +157,7 @@ dashboard
               if(tile.width == 0) {
                 var j = indexRightNeighbour;
                 for(j; j < row.length; j++) {
-                  if(row[j].tiledrawn) {break;}
+                  //if(row[j].tiledrawn) {break;} With break responsible bug without spaces
                   if(row[j].width == 0) {
                     remainingTiles += 1;
                   } else {
@@ -232,6 +242,20 @@ dashboard
             }
           }
         }.bind(this));
+      },
+      _onIronResize: function() {
+        if(!this.responsible) {return;}
+        var x = this.parent.offsetWidth;
+        var y = this.parent.offsetHeight;
+        this.$.dashboard.style.width = x + 'px';
+        this.$.dashboard.style.height = y + 'px';
+        this._drawDashboard();
+      },
+      get parent() {
+        if (this.parentNode.nodeType === Node.DOCUMENT_FRAGMENT_NODE) {
+          return this.parentNode.host;
+        }
+        return this.parentNode;
       }
     });
   </script>

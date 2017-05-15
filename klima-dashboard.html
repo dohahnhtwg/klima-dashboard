@@ -193,15 +193,6 @@ dashboard
               }
             }
             tile.style.width = tileWidth;
-            if(parseFloat(tile.style.left, 10) < parseFloat(biggestLeftNeighbour, 10)) {
-              for(var z=0; z <= tile.overlap; z++) {
-                var leftNeighbourToAdjust = dashboardMap.get(tile.row+z)[tile.positions[z]-2];
-                if(leftNeighbourToAdjust != null && leftNeighbourToAdjust.width == 0) {
-                  var adjustedWidth = biggestLeftNeighbour - parseFloat(leftNeighbourToAdjust.style.left, 10);
-                  leftNeighbourToAdjust.style.width = adjustedWidth + 'px';
-                }
-              }
-            }
             tile.style.left = biggestLeftNeighbour + 'px';
             tile.style.top = (tile.row-1)*rowHeight + 'px';
             tile.style.height = (tile.overlap+1)*rowHeight + 'px';
@@ -263,6 +254,7 @@ dashboard
         if(!this.responsive) {return;}
         var x = this.parent.offsetWidth;
         var y = this.parent.offsetHeight;
+        //console.log("X: " + x + ", Y: " + y);
         this.$.dashboard.style.width = x + 'px';
         this.$.dashboard.style.height = y + 'px';
         this._drawDashboard();

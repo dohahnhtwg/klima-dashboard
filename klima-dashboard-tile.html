@@ -47,13 +47,13 @@ tile of klima-dashboard
       }
     </style>
       <div id="overflowContainer">
-        <div id="leftButton" class="buttons" hidden="{{!leftButtonVisible}}" on-tap="_nextLeftTile">
-          <iron-icon class="icons" icon="icons:chevron-left"></iron-icon>
-        </div>
-        <div id="rightButton" class="buttons" hidden="{{!rightButtonVisible}}" on-tap="_nextRightTile">
-          <iron-icon class="icons" icon="icons:chevron-right"></iron-icon>
-        </div>
         <content></content>
+     </div>
+     <div id="leftButton" class="buttons" hidden="{{!leftButtonVisible}}" on-tap="_nextLeftTile">
+       <iron-icon class="icons" icon="icons:chevron-left"></iron-icon>
+     </div>
+     <div id="rightButton" class="buttons" hidden="{{!rightButtonVisible}}" on-tap="_nextRightTile">
+       <iron-icon class="icons" icon="icons:chevron-right"></iron-icon>
      </div>
   </template>
 

@@ -16,25 +16,28 @@
     <style is="custom-style" include="demo-pages-shared-styles">
       .dashboards {
         --klima-dashboard-width: 400px;
-        --klima-dashboard-height: 300px;
+        --klima-dashboard-height: 500px;
+      }
+      #demo {
+        width: 100%;
       }
     </style>
   </head>
   <body>
     <div class="vertical-section-container centered">
       <h3>Basic klima-dashboard demo</h3>
-      <demo-snippet>
+      <demo-snippet id="demo">
         <template>
           <div style="height: 100%; width: 100%">
           <klima-dashboard border-width="4" class="dashboards" responsive> <!-- responsive -->
             <!-- A -->
-            <!-- <klima-dashboard-tile style="background-color: red;" row="1" overlap="1" positions="[1,1]" width="50">A</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: red;" row="1" overlap="1" positions="[1,1]" width="50">A</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: blue;" row="1" positions="[2]" width="25">B</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: green;" row="1" positions="[3]" width="25">C</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: yellow;" row="2" positions="[2]" width="50">D</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: orange;" row="3" positions="[1]">E</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: aqua;" row="3" positions="[2]">F</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: hotpink;" row="3" positions="[3]">G</klima-dashboard-tile> -->
+            <klima-dashboard-tile style="background-color: hotpink;" row="3" positions="[3]">G</klima-dashboard-tile>
 
             <!-- B -->
             <!-- <klima-dashboard-tile style="background-color: red;" row="1" positions="[1]" width="20">A</klima-dashboard-tile>
@@ -63,7 +66,7 @@
             <klima-dashboard-tile style="background-color: crimson;" row="3" overlap="1" positions="[2,2]" width="10">F</klima-dashboard-tile> -->
 
             <!-- C without widths produces graphic bug -->
-            <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]">A</klima-dashboard-tile>
+            <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]">A</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: yellow;" row="1" positions="[2]">B</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: blue;" row="1" positions="[3]">C</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: silver;" row="1" positions="[4]">D</klima-dashboard-tile>
@@ -97,7 +100,7 @@
             <klima-dashboard-tile style="background-color: aqua;" row="6" overlap="1" positions="[7,7]">7</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: lime;" row="6" overlap="1" positions="[8,8]">9</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" positions="[6,6,6,6]">6</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" positions="[7,7]">0</klima-dashboard-tile>
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" positions="[7,7]">0</klima-dashboard-tile> -->
 
             <!-- C with widths -->
             <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]" width="8">A</klima-dashboard-tile>

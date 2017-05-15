@@ -29,25 +29,25 @@ dashboard page
       }
     </style>
     <klima-dashboard border-width="4" id="dashboard" responsive>
-      <klima-dashboard-tile class="tile" row="1" positions="[1]">
+      <klima-dashboard-tile id="key-metrics" class="tile" row="1" positions="[1]" min-width="400">
         <key-metrics-tile source-url="http://127.0.0.1:8081/json/dashboard/keyMetrics.json"></key-metrics-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="1" positions="[2]">
+      <klima-dashboard-tile id="objectives" class="tile" row="1" positions="[2]" min-width="400">
         <objectives-tile source-url="http://127.0.0.1:8081/json/dashboard/objectives.json"></objectives-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="2" positions="[1]">
+      <klima-dashboard-tile id="internal-medicine" class="tile" row="2" positions="[1]" min-width="300">
         <department-tile source-url="http://127.0.0.1:8081/json/dashboard/department/internalMedicine.json"></department-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="2" positions="[2]">
+      <klima-dashboard-tile id="surfical-ward" class="tile" row="2" positions="[2]" min-width="300">
         <department-tile source-url="http://127.0.0.1:8081/json/dashboard/department/surgicalWard.json"></department-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="2" positions="[3]">
+      <klima-dashboard-tile id="gynecology" class="tile" row="2" positions="[3]" min-width="300">
         <department-tile source-url="http://127.0.0.1:8081/json/dashboard/department/gynecology.json"></department-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="3" positions="[1]">
+      <klima-dashboard-tile id="centralFunctional" class="tile" row="3" positions="[1]">
         <functional-central-tile source-url="http://127.0.0.1:8081/json/dashboard/department/centralAndFunctional.json"></functional-central-tile>
       </klima-dashboard-tile>
-      <klima-dashboard-tile class="tile" row="3" positions="[2]">
+      <klima-dashboard-tile id="info" class="tile" row="3" positions="[2]">
         <info-tile source-url="http://127.0.0.1:8081/json/dashboard/info.json"></info-tile>
       </klima-dashboard-tile>
     </klima-dashboard>

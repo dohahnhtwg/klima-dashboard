@@ -180,9 +180,9 @@ dashboard
                 if(width < minWidth) {
                   minWidth = width;
                 }
-                tileWidth = minWidth + 'px';
+                tileWidth = minWidth;
               } else {
-                tileWidth = (tile.width/100*parseFloat(dashboardWidth, 10)) + 'px';
+                tileWidth = (tile.width/100*parseFloat(dashboardWidth, 10));
               }
               var left = 0;
               for(var y=indexRightNeighbour-2; y >= 0; y--) {
@@ -192,15 +192,62 @@ dashboard
                 biggestLeftNeighbour = left;
               }
             }
-            tile.style.width = tileWidth;
-            tile.style.left = biggestLeftNeighbour + 'px';
-            tile.style.top = (tile.row-1)*rowHeight + 'px';
-            tile.style.height = (tile.overlap+1)*rowHeight + 'px';
-            tile.tiledrawn = true;
-          });
-        });
+            this._drawTile(tile, tileWidth, rowHeight, biggestLeftNeighbour)
+          }.bind(this));
+        }.bind(this));
         this._fillRemainingSpaces();
+        this._makeRoomForTiles();
       },
+
+      _makeRoomForTiles: function() {
+        this.dashboardMap.forEach(function(tiles, k) {
+          for(var i=0; i < tiles.length; i++) {
+            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth) {
+              this._hideTile(tiles[i]);
+            }
+          }
+        }.bind(this));
+      },
+
+      _hideTile: function(tile) {
+        var tileWidth = parseFloat(tile.style.width, 10);
+        var tileLeft = parseFloat(tile.style.left, 10);
+        var row = this.dashboardMap.get(tile.row);
+        var positionInRow = tile.positions[0];
+        var leftNeighbour = row[positionInRow-2];
+        var rightNeighbour = row[positionInRow];
+        if(leftNeighbour == null || !leftNeighbour.isDisplayed) {
+          if(rightNeighbour == null || !rightNeighbour.isDisplayed) {
+            return
+          } else {
+            this._giveRightNeighbourMoreRoom(rightNeighbour, tileLeft, tileWidth);
+            tile.isDisplayed = false;
+          }
+        } else {
+          this._giveLeftNeighbourMoreRoom(leftNeighbour, tileWidth);
+          tile.isDisplayed = false;
+        }
+      },
+
+      _giveLeftNeighbourMoreRoom: function(tile, newRoom) {
+        var width = parseFloat(tile.style.width, 10);
+        tile.style.width = (width + newRoom) + 'px';
+      },
+
+      _giveRightNeighbourMoreRoom: function(tile, newLeft, newRoom) {
+        var width = parseFloat(tile.style.width, 10);
+        tile.style.left = newLeft +  'px';
+        tile.style.width = (width + newRoom) + 'px';
+      },
+
+      _drawTile: function(tile, tileWidth, rowHeight, leftBorder) {
+        tile.isDisplayed = true;
+        tile.style.width = tileWidth + 'px';
+        tile.style.left = leftBorder + 'px';
+        tile.style.top = (tile.row-1)*rowHeight + 'px';
+        tile.style.height = (tile.overlap+1)*rowHeight + 'px';
+      },
+
       _fillRemainingSpaces: function() {
         this.dashboardMap.forEach(function(tiles, k) {
           for(var i=0; i < tiles.length; i++) {
@@ -254,7 +301,6 @@ dashboard
         if(!this.responsive) {return;}
         var x = this.parent.offsetWidth;
         var y = this.parent.offsetHeight;
-        //console.log("X: " + x + ", Y: " + y);
         this.$.dashboard.style.width = x + 'px';
         this.$.dashboard.style.height = y + 'px';
         this._drawDashboard();

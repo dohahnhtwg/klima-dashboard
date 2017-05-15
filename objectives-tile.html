@@ -50,6 +50,10 @@ tile with key metrics
         align-items: center;
         justify-content: center;
       }
+      #placeDiv {
+        margin: 4px;
+        font-size: x-large;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -74,7 +78,7 @@ tile with key metrics
           <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
         </div>
       </div>
-      <h3>Gesamtplatzierung: [[ranking]]</h3>
+      <div id="placeDiv"><b>Gesamtplatzierung: [[ranking]]</b></div>
       <table>
         <colgroup>
            <col span="1" style="width: 30%;">

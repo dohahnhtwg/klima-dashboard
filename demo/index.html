@@ -26,7 +26,7 @@
       <demo-snippet>
         <template>
           <div style="height: 100%; width: 100%">
-          <klima-dashboard border-width="4" class="dashboards" responsive="true">
+          <klima-dashboard border-width="4" class="dashboards" responsive> <!-- responsive -->
             <!-- A -->
             <!-- <klima-dashboard-tile style="background-color: red;" row="1" overlap="1" positions="[1,1]" width="50">A</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: blue;" row="1" positions="[2]" width="25">B</klima-dashboard-tile>
@@ -62,8 +62,8 @@
             <klima-dashboard-tile style="background-color: aqua;" row="3" overlap="1" positions="[1,1]" width="10">E</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: crimson;" row="3" overlap="1" positions="[2,2]" width="10">F</klima-dashboard-tile> -->
 
-            <!-- C without widths -->
-            <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]">A</klima-dashboard-tile>
+            <!-- C without widths produces graphic bug -->
+            <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]">A</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: yellow;" row="1" positions="[2]">B</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: blue;" row="1" positions="[3]">C</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: silver;" row="1" positions="[4]">D</klima-dashboard-tile>
@@ -97,7 +97,7 @@
             <klima-dashboard-tile style="background-color: aqua;" row="6" overlap="1" positions="[7,7]">7</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: lime;" row="6" overlap="1" positions="[8,8]">9</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" positions="[6,6,6,6]">6</klima-dashboard-tile>
-            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" positions="[7,7]">0</klima-dashboard-tile> -->
+            <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" positions="[7,7]">0</klima-dashboard-tile>
 
             <!-- C with widths -->
             <!-- <klima-dashboard-tile style="background-color: hotpink;" row="1" positions="[1]" width="8">A</klima-dashboard-tile>
@@ -173,13 +173,12 @@
             <klima-dashboard-tile style="background-color: crimson;" row="6" overlap="3" positions="[6,6,6,6]" width="8">6</klima-dashboard-tile>
             <klima-dashboard-tile style="background-color: crimson;" row="4" overlap="1" positions="[7,7]">0</klima-dashboard-tile> -->
 
-            <!-- Bug with responsible -->
-            <klima-dashboard-tile id="tileK" style="background-color: blue;" row="1" overlap="2" positions="[1,1,1]">K</klima-dashboard-tile>
+            <!-- <klima-dashboard-tile id="tileK" style="background-color: blue;" row="1" overlap="2" positions="[1,1,1]">K</klima-dashboard-tile>
             <klima-dashboard-tile id="tileL" style="background-color: red;" row="1" overlap="1" positions="[2,2]" width="40">L</klima-dashboard-tile>
             <klima-dashboard-tile id="tileM" style="background-color: yellow;" row="3" positions="[2]">M</klima-dashboard-tile>
             <klima-dashboard-tile id="tileN" style="background-color: green;" row="1" positions="[3]">N</klima-dashboard-tile>
             <klima-dashboard-tile id="tileO" style="background-color: hotpink;" row="2" overlap="1" positions="[3,3]" width="40">O</klima-dashboard-tile>
-            <klima-dashboard-tile id="tileP" style="background-color: lime;" row="1" overlap="2" positions="[4,4,4]">P</klima-dashboard-tile>
+            <klima-dashboard-tile id="tileP" style="background-color: lime;" row="1" overlap="2" positions="[4,4,4]">P</klima-dashboard-tile> -->
           </klima-dashboard>
         </div>
         </template>

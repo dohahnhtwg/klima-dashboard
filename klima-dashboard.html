@@ -157,7 +157,6 @@ dashboard
               if(tile.width == 0) {
                 var j = indexRightNeighbour;
                 for(j; j < row.length; j++) {
-                  //if(row[j].tiledrawn) {break;} With break responsible bug without spaces
                   if(row[j].width == 0) {
                     remainingTiles += 1;
                   } else {
@@ -214,19 +213,36 @@ dashboard
       _fillRemainingSpaces: function() {
         this.dashboardMap.forEach(function(tiles, k) {
           for(var i=0; i < tiles.length; i++) {
-            if(tiles[i+1] != null && tiles[i+1].width == 0) {
-              if(tiles[i].row <= tiles[i+1].row && tiles[i].row + tiles[i].overlap >= tiles[i+1].row + tiles[i+1].overlap) {
-                var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
-                if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
-                  var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
-                  tiles[i+1].style.left = rightBorder + 'px';
-                  tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
+            if(tiles[i+1] != null) {
+              if(tiles[i+1].width == 0) {
+                if(this._isfullyCovered(tiles[i], tiles[i+1])) {
+                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
+                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
+                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
+                    tiles[i+1].style.left = rightBorder + 'px';
+                    tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
+                  }
+                }
+              }
+              if(tiles[i].width == 0) {
+                if(this._isfullyCovered(tiles[i+1], tiles[i])) {
+                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
+                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
+                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
+                    tiles[i].style.width = (parseFloat(tiles[i].style.width, 10) + diff) + 'px';
+                  }
                 }
               }
             }
           }
-        });
+        }.bind(this));
       },
+
+      _isfullyCovered: function(tileA, tileB) {
+        return (tileA.row <= tileB.row &&
+          tileA.row + tileA.overlap >= tileB.row + tileB.overlap);
+      },
+
       _setBorders: function() {
         var numRows = this.dashboardMap.size;
         var outerBorderWidth = this.borderWidth;
@@ -244,7 +260,7 @@ dashboard
         }.bind(this));
       },
       _onIronResize: function() {
-        if(!this.responsible) {return;}
+        if(!this.responsive) {return;}
         var x = this.parent.offsetWidth;
         var y = this.parent.offsetHeight;
         this.$.dashboard.style.width = x + 'px';

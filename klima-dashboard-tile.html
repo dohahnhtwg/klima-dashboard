@@ -111,11 +111,8 @@ tile of klima-dashboard
       },
 
       _displayedChanged: function(newValue) {
-        if(newValue) {
-          this.hidden = false;
-        } else {
-          this.hidden = true;
-        }
+        this.hidden = !newValue;
+        this.fire('isDisplayedChanged');
       },
 
       setBorder: function(top, right, bottom, left, color) {
@@ -159,6 +156,28 @@ tile of klima-dashboard
         } else {
           this.nextRightTile();
         }
+      },
+      isLastVisibleTileInRow: function() {
+        if(!this.isDisplayed) {return false;}
+        var rightNeighbour = this.rightNeighbour;
+        while(rightNeighbour != null && !rightNeighbour.isDisplayed) {
+          rightNeighbour = rightNeighbour.rightNeighbour;
+        }
+        if(rightNeighbour == null) {
+          return true;
+        }
+        return false;
+      },
+      isFirstVisibleTileInRow: function() {
+        if(!this.isDisplayed) {return false;}
+        var leftNeighbour = this.leftNeighbour;
+        while(leftNeighbour != null && !leftNeighbour.isDisplayed) {
+          leftNeighbour = leftNeighbour.leftNeighbour;
+        }
+        if(leftNeighbour == null) {
+          return true;
+        }
+        return false;
       }
     });
   </script>

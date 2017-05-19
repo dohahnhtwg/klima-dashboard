@@ -74,9 +74,7 @@ dashboard
       },
 
       _adjustHeaderBorder: function(borderWidth, borderColor) {
-        console.log(this.$.dashboardHeader);
         var distributed = this.getContentChildren('#headerChildrens');
-        console.log(distributed);
         if(distributed.length != 0) {
           this.$.dashboardHeader.style.borderStyle = "solid";
           this.$.dashboardHeader.style.borderWidth = borderWidth + 'px';
@@ -87,6 +85,7 @@ dashboard
       _addTilesFromLightDomToDashboard: function() {
         var tiles = this.getContentChildren('#tiles');
         for(var i=0; i < tiles.length; i++) {
+          this.listen(tiles[i], 'isDisplayedChanged', '_setBorders');
           for(var j=0; j <= tiles[i].overlap; j++) {
             this._addTileToDashboard(tiles[i], tiles[i].row + j);
           }
@@ -225,7 +224,7 @@ dashboard
         if(!this.responsive) {return;}
         this.dashboardMap.forEach(function(tiles, k) {
           for(var i=0; i < tiles.length; i++) {
-            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth) {
+            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth && tiles[i].isDisplayed) {
               this._hideTile(tiles[i]);
             } else {
               this._removeNextButtonFromNbr(tiles[i]);
@@ -272,7 +271,6 @@ dashboard
       },
 
       _focusTile: function(tile, actualTile) {
-        console.log("Focus from "+ actualTile.id + " to " + tile.id);
         tile.style.width = actualTile.style.width;
         tile.style.left = actualTile.style.left;
         var leftNeighbour = this._getLeftNeighbour(tile);
@@ -362,10 +360,10 @@ dashboard
         this.dashboardMap.forEach(function(tiles, k) {
           for(var i=0; i < tiles.length; i++) {
             if(k == tiles[i].row) {
-              var top = (k == 1 ? outerBorderWidth : innerBorderWidth);
-              var right = (i == tiles.length - 1 ? outerBorderWidth : innerBorderWidth);
-              var bottom = (k+tiles[i].overlap == numRows ? outerBorderWidth : innerBorderWidth);
-              var left = (i == 0 ? outerBorderWidth : innerBorderWidth);
+              var top = k == 1 ? outerBorderWidth : innerBorderWidth;
+              var right = tiles[i].isLastVisibleTileInRow() ? outerBorderWidth : innerBorderWidth;
+              var bottom = k+tiles[i].overlap == numRows ? outerBorderWidth : innerBorderWidth;
+              var left = tiles[i].isFirstVisibleTileInRow() ? outerBorderWidth : innerBorderWidth;
               tiles[i].setBorder(top+'px',right+'px',bottom+'px',left+'px',this.borderColor);
             }
           }

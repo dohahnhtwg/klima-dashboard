@@ -51,6 +51,11 @@ tile with department info's
         align-items: center;
         justify-content: center;
       }
+      .barChart {
+        width: 100%;
+        height: 100%;
+        max-width: 400px;
+      }
     </style>
     <iron-ajax id="ajax"
       auto
@@ -63,7 +68,7 @@ tile with department info's
     </div>
     <div style="width: 100%; height: 100%;" hidden$="{{!dataAvailable}}">
       <div class="headerContainer">
-        <h3 class="caption">[[name]]</h3>
+        <h3 class="caption" on-tap="_redraw">[[name]]</h3>
         <div class="alignRight">
           <iron-icon class="alignRight" icon="icons:zoom-in"></iron-icon>
         </div>
@@ -86,7 +91,8 @@ tile with department info's
             </td>
             <td rowspan="6">
               <div>
-                <google-chart type="bar" style="width: 100%; height: 100%;"
+                <google-chart type="bar"
+                  class="barChart"
                   data='[[profitPerDrg]]'
                   options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"format": "#€"}}'>
                 </google-chart>
@@ -173,6 +179,11 @@ tile with department info's
           this.handleError()
         }
       },
+      attached: function() {
+        var parent = Polymer.dom(this).parentNode;
+        console.log(parent);
+        this.listen(parent, 'isDisplayedChanged', '_onIronResize');
+      },
       handleResponse: function(e) {
         this._processData(e.detail.response);
         this.dataAvailable = true;
@@ -207,6 +218,12 @@ tile with department info's
       },
       _actualValue: function(array) {
         return array[array.length-1][1];
+      },
+      _onIronResize: function() {
+        var sparks = Polymer.dom(this.root).querySelectorAll('.spark')
+        for(var i = 0; i < sparks.length; i++) {
+          sparks[i].redraw();
+        }
       }
     });
   </script>

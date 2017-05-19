@@ -20,6 +20,9 @@ dashboard
         height: var(--klima-dashboard-height);
       }
     </style>
+    <div id="dashboardHeader">
+      <content id="headerChildrens" select=".header"></content>
+    </div>
     <div id="dashboard">
       <content id="tiles" select="klima-dashboard-tile"></content>
     </div>
@@ -34,6 +37,9 @@ dashboard
       listeners: {
         'iron-resize': '_onIronResize'
       },
+      observers: [
+        '_adjustHeaderBorder(borderWidth, borderColor)'
+      ],
       properties: {
         dashboardMap: {
           type: Object,
@@ -54,11 +60,28 @@ dashboard
           value: false
         }
       },
+
+      ready: function() {
+        var boundHandler = this._adjustHeaderBorder.bind(this);
+        this._observer = Polymer.dom(this.$.dashboardHeader).observeNodes(boundHandler);
+      },
+
       attached: function() {
         this._addTilesFromLightDomToDashboard();
         this._sortDashboardMap();
         this._drawDashboard();
         this._setBorders();
+      },
+
+      _adjustHeaderBorder: function(borderWidth, borderColor) {
+        console.log(this.$.dashboardHeader);
+        var distributed = this.getContentChildren('#headerChildrens');
+        console.log(distributed);
+        if(distributed.length != 0) {
+          this.$.dashboardHeader.style.borderStyle = "solid";
+          this.$.dashboardHeader.style.borderWidth = borderWidth + 'px';
+          this.$.dashboardHeader.style.borderColor = borderColor;
+        }
       },
 
       _addTilesFromLightDomToDashboard: function() {

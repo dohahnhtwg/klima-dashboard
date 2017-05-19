@@ -28,8 +28,20 @@ dashboard page
       .tile {
         background-color: #EEEEEE;
       }
+      .header {
+        @apply(--layout-horizontal);
+        @apply(--layout-justified);
+      }
+      #period {
+        font-size: 1.5em;
+        font-weight: bold;
+      }
     </style>
     <klima-dashboard border-width="4" responsive> <!-- responsive || id="dashboard"-->
+      <div class="header">
+        <h2 style="margin: 0px">Klima Dashboard</h2>
+        <div id="period">Periode 3</div>
+      </div>
       <klima-dashboard-tile id="key-metrics" class="tile" row="1" positions="[1]" min-width="540">
         <key-metrics-tile source-url="http://127.0.0.1:8081/json/dashboard/keyMetrics.json"></key-metrics-tile>
       </klima-dashboard-tile>

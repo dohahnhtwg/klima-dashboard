@@ -291,6 +291,22 @@ dashboard
         actualTile.isDisplayed = false;
         tile.isDisplayed = true;
         this._adjustArrowsNewFocusedTile(tile);
+        this._adjustArrowsOldFocusedTile(actualTile);
+      },
+
+      _adjustArrowsOldFocusedTile: function(tile) {
+        var leftNeighbour = this._getLeftNeighbour(tile);
+        var rightNeighbour = this._getRightNeighbour(tile);
+        if(leftNeighbour != null && leftNeighbour.isDisplayed) {
+          leftNeighbour.nextRightTile = function() {
+            this._focusTile(tile, leftNeighbour);
+          }.bind(this);
+        }
+        if(rightNeighbour != null && rightNeighbour.isDisplayed) {
+          rightNeighbour.nextLeftTile = function() {
+            this._focusTile(tile, rightNeighbour);
+          }.bind(this);
+        }
       },
 
       _adjustArrowsNewFocusedTile: function(tile) {

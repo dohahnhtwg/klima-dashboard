@@ -164,10 +164,11 @@ dashboard
       },
 
       _drawDashboard: function() {
-        var dashboardHeight = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("height");
-        var dashboardWidth = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("width");
+        var dashboardHeight = this.$.dashboard.offsetHeight;
+        var dashboardWidth = this.$.dashboard.offsetWidth;
         var dashboardLeft = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("left");
-        var rowHeight = parseInt(dashboardHeight, 10)/this.dashboardMap.size;
+        console.log("dashboardLeft: " + dashboardLeft + ", offsetLeft: " + this.$.dashboard.offsetLeft);
+        var rowHeight = dashboardHeight/this.dashboardMap.size;
         var dashboardMap = this.dashboardMap;
         this.dashboardMap.forEach(function(tiles, k) {
           tiles.forEach(function(tile) {
@@ -186,7 +187,7 @@ dashboard
                   if(row[j].width == 0) {
                     remainingTiles += 1;
                   } else {
-                    reservedWidth += row[j].width/100*parseFloat(dashboardWidth, 10);
+                    reservedWidth += row[j].width/100*dashboardWidth;
                   }
                 }
                 var end = 0;
@@ -197,7 +198,7 @@ dashboard
                   start = parseFloat(row[indexRightNeighbour-2].style.left, 10) + parseFloat(row[indexRightNeighbour-2].style.width, 10);
                 }
                 if(row[j] == null) {
-                  end = parseFloat(dashboardLeft, 10) + parseFloat(dashboardWidth, 10);
+                  end = dashboardWidth;
                 } else {
                   end = parseFloat(row[j].style.left, 10)
                 }
@@ -208,7 +209,7 @@ dashboard
                 }
                 tileWidth = minWidth;
               } else {
-                tileWidth = (tile.width/100*parseFloat(dashboardWidth, 10));
+                tileWidth = tile.width/100*dashboardWidth;
               }
               var left = 0;
               for(var y=indexRightNeighbour-2; y >= 0; y--) {

@@ -69,6 +69,7 @@ dashboard
       attached: function() {
         this._addTilesFromLightDomToDashboard();
         this._sortDashboardMap();
+        this._printDashboard();
         this._drawDashboard();
         this._setBorders();
       },
@@ -106,49 +107,57 @@ dashboard
           var sorted = [];
           var numberTiles = tiles.length;
           for(var i=0; i < numberTiles; i++) {
-            var len = tiles.length;
-            var minPosition = Infinity;
-            var minTile = null;
-            var minIndex = -1;
-            while(len--) {
-              if(tiles[len].positions[row-tiles[len].row] < minPosition) {
-                minPosition = tiles[len].positions[row-tiles[len].row];
-                minTile = tiles[len];
-                minIndex = len;
-              }
-            }
-            if(minTile.row == row) {
-              if(sorted.length == 0) {
-                minTile.leftNeighbour = null;
-              } else {
-                minTile.leftNeighbour = sorted[sorted.length-1];
-              }
-            }
-            if(sorted.length != 0) {
-              if(sorted[sorted.length-1].row == row) {
-                sorted[sorted.length-1].rightNeighbour = minTile;
-              }
-            }
-            if(sorted.length == numberTiles-1) {
-              minTile.rightNeighbour = null;
-            }
+            var minTile = this._removeTileWithSmallesPos(tiles, row);
+            this._setLeftNrb(minTile, sorted, row);
+            this._setRightNrb(minTile, sorted, row)
             sorted.push(minTile);
-            tiles.splice(minIndex, 1);
           }
           dashboardMap.set(row, sorted);
-        });
+        }.bind(this));
+      },
+
+      _setLeftNrb: function(tile, sorted, row) {
+        if(tile.row == row) {
+          if(sorted.length == 0) {
+            tile.leftNeighbour = null;
+          } else {
+            tile.leftNeighbour = sorted[sorted.length-1];
+          }
+        }
+      },
+
+      _setRightNrb: function(tile, sorted, row) {
+        if(sorted.length != 0) {
+          if(sorted[sorted.length-1].row == row) {
+            sorted[sorted.length-1].rightNeighbour = tile;
+          }
+        }
+        if(tile.row == row) {
+          tile.rightNeighbour = null;
+        }
+      },
+
+      _removeTileWithSmallesPos: function(tiles, row) {
+        var len = tiles.length;
+        var minPosition = Infinity;
+        var minTile = null;
+        var minIndex = -1;
+        while(len--) {
+          if(tiles[len].positions[row-tiles[len].row] < minPosition) {
+            minPosition = tiles[len].positions[row-tiles[len].row];
+            minTile = tiles[len];
+            minIndex = len;
+          }
+        }
+        tiles.splice(minIndex, 1);
+        return minTile;
       },
 
       _printDashboard: function() {
         this.dashboardMap.forEach(function(tiles, row) {
-          tiles.forEach(function(node) {
-            if(node.row == row) {
-              console.log(node.innerText + " has a width of " + node.width);
-              if(node.leftNeighbour != null) {
-                console.log("Left Neighbour of " + node.innerText + " is " + node.leftNeighbour.innerText);
-              } else {
-                console.log("Left Neighbour of " + node.innerText + " is NULL");
-              }
+          tiles.forEach(function(tile) {
+            if(tile.row == row) {
+              console.log(tile.tileInfo());
             }
           })
         });

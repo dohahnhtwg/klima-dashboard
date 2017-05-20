@@ -195,6 +195,12 @@ tile of klima-dashboard
           leftNeighbour = leftNeighbour.leftNeighbour;
         }
         return leftNeighbour;
+      },
+      tileInfo: function() {
+        leftNrb = this.leftNeighbour ? this.leftNeighbour.id : "Null";
+        rightNrb = this.rightNeighbour ? this.rightNeighbour.id : "Null";
+        return this.id + ": Width = " + this.width + ", Left Nrb = " + leftNrb +
+          ", Right Nrb = " + rightNrb;
       }
     });
   </script>

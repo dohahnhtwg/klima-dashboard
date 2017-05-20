@@ -166,8 +166,6 @@ dashboard
       _drawDashboard: function() {
         var dashboardHeight = this.$.dashboard.offsetHeight;
         var dashboardWidth = this.$.dashboard.offsetWidth;
-        var dashboardLeft = window.getComputedStyle(this.$.dashboard, null).getPropertyValue("left");
-        console.log("dashboardLeft: " + dashboardLeft + ", offsetLeft: " + this.$.dashboard.offsetLeft);
         var rowHeight = dashboardHeight/this.dashboardMap.size;
         var dashboardMap = this.dashboardMap;
         this.dashboardMap.forEach(function(tiles, k) {

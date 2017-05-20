@@ -219,6 +219,10 @@ tile with key metrics
           value: false
         }
       },
+      attached: function() {
+        var parent = Polymer.dom(this).parentNode;
+        this.listen(parent, 'isDisplayedChanged', '_onParentDisplayed');
+      },
       ready: function() {
         if(this.sourceUrl != null) {
           this.$.ajax.url = this.sourceUrl;
@@ -250,6 +254,14 @@ tile with key metrics
       },
       _actualValue: function(array) {
         return array[array.length-1][1];
+      },
+      _onParentDisplayed: function(isDisplayed) {
+        if(isDisplayed) {
+          var sparks = Polymer.dom(this.root).querySelectorAll('.spark')
+          for(var i = 0; i < sparks.length; i++) {
+            sparks[i].redraw();
+          }
+        }
       }
     });
   </script>

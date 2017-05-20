@@ -172,7 +172,7 @@ dashboard
             for(var i=0; i <= tile.overlap; i++) {
               var indexRightNeighbour = tile.positions[i];
               var row = dashboardMap.get(tile.row + i);
-              var rightNeighbour = row[tile.positions[i]];
+              var rightNeighbour = row[indexRightNeighbour];
               var remainingTiles = 1;
               var reservedWidth = 0;
               if(tile.width == 0) {
@@ -223,14 +223,42 @@ dashboard
       _makeRoomForTiles: function() {
         if(!this.responsive) {return;}
         this.dashboardMap.forEach(function(tiles, k) {
+          var noTileVisible = true;
           for(var i=0; i < tiles.length; i++) {
-            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth && tiles[i].isDisplayed) {
+            var x = (i == tiles.length-1) && noTileVisible;
+            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth && !x) {
               this._hideTile(tiles[i]);
             } else {
+              noTileVisible = false;
+              tiles[i].isDisplayed = true;
               this._removeNextButtonFromNbr(tiles[i]);
             }
           }
         }.bind(this));
+      },
+
+      _hideTile: function(tile) {
+        var tileWidth = parseFloat(tile.style.width, 10);
+        var tileLeft = parseFloat(tile.style.left, 10);
+        var leftNeighbour = this._getLeftNeighbour(tile);
+        var rightNeighbour = this._getRightNeighbour(tile);
+        if(rightNeighbour == null) {
+          if(leftNeighbour == null) {
+            return
+          } else {
+            this._giveLeftNeighbourMoreRoom(leftNeighbour, tileWidth);
+            leftNeighbour.nextRightTile = function() {
+              this._focusTile(tile, leftNeighbour);
+            }.bind(this);
+            tile.isDisplayed = false;
+          }
+        } else {
+          this._giveRightNeighbourMoreRoom(rightNeighbour, tileLeft, tileWidth);
+          rightNeighbour.nextLeftTile = function() {
+            this._focusTile(tile, rightNeighbour);
+          }.bind(this);
+          tile.isDisplayed = false;
+        }
       },
 
       _removeNextButtonFromNbr(tile) {
@@ -246,47 +274,23 @@ dashboard
         }
       },
 
-      _hideTile: function(tile) {
-        var tileWidth = parseFloat(tile.style.width, 10);
-        var tileLeft = parseFloat(tile.style.left, 10);
-        var leftNeighbour = this._getLeftNeighbour(tile);
-        var rightNeighbour = this._getRightNeighbour(tile);
-        if(leftNeighbour == null || !leftNeighbour.isDisplayed) {
-          if(rightNeighbour == null || !rightNeighbour.isDisplayed) {
-            return
-          } else {
-            this._giveRightNeighbourMoreRoom(rightNeighbour, tileLeft, tileWidth);
-            rightNeighbour.nextLeftTile = function() {
-              this._focusTile(tile, rightNeighbour);
-            }.bind(this);
-            tile.isDisplayed = false;
-          }
-        } else {
-          this._giveLeftNeighbourMoreRoom(leftNeighbour, tileWidth);
-          leftNeighbour.nextRightTile = function() {
-            this._focusTile(tile, leftNeighbour);
-          }.bind(this);
-          tile.isDisplayed = false;
-        }
-      },
-
       _focusTile: function(tile, actualTile) {
         tile.style.width = actualTile.style.width;
         tile.style.left = actualTile.style.left;
+        actualTile.isDisplayed = false;
+        tile.isDisplayed = true;
         var leftNeighbour = this._getLeftNeighbour(tile);
         var rightNeighbour = this._getRightNeighbour(tile);
-        if(leftNeighbour != null) {
+        if(leftNeighbour != null && !leftNeighbour.isDisplayed) {
           tile.nextLeftTile = function() {
             this._focusTile(leftNeighbour, tile);
           }.bind(this);
         }
-        if(rightNeighbour != null) {
+        if(rightNeighbour != null && !rightNeighbour.isDisplayed) {
           tile.nextRightTile = function() {
             this._focusTile(rightNeighbour, tile);
           }.bind(this);
         }
-        actualTile.isDisplayed = false;
-        tile.isDisplayed = true;
       },
 
       _getLeftNeighbour: function(tile) {
@@ -313,7 +317,6 @@ dashboard
       },
 
       _drawTile: function(tile, tileWidth, rowHeight, leftBorder) {
-        tile.isDisplayed = true;
         tile.style.width = tileWidth + 'px';
         tile.style.left = leftBorder + 'px';
         tile.style.top = (tile.row-1)*rowHeight + 'px';

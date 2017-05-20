@@ -51,7 +51,7 @@ tile with department info's
         align-items: center;
         justify-content: center;
       }
-      .barChart {
+      #barChart {
         width: 100%;
         height: 100%;
         max-width: 400px;
@@ -92,7 +92,7 @@ tile with department info's
             <td rowspan="6">
               <div>
                 <google-chart type="bar"
-                  class="barChart"
+                  id="barChart"
                   data='[[profitPerDrg]]'
                   options='{"backgroundColor": "#EEEEEE", "legend": {"position": "none"}, "hAxis": {"format": "#€"}}'>
                 </google-chart>
@@ -181,7 +181,6 @@ tile with department info's
       },
       attached: function() {
         var parent = Polymer.dom(this).parentNode;
-        console.log(parent);
         this.listen(parent, 'isDisplayedChanged', '_onIronResize');
       },
       handleResponse: function(e) {
@@ -219,10 +218,13 @@ tile with department info's
       _actualValue: function(array) {
         return array[array.length-1][1];
       },
-      _onIronResize: function() {
-        var sparks = Polymer.dom(this.root).querySelectorAll('.spark')
-        for(var i = 0; i < sparks.length; i++) {
-          sparks[i].redraw();
+      _onIronResize: function(isDisplayed) {
+        if(isDisplayed) {
+          var sparks = Polymer.dom(this.root).querySelectorAll('.spark')
+          for(var i = 0; i < sparks.length; i++) {
+            sparks[i].redraw();
+          }
+          this.$.barChart.redraw();
         }
       }
     });

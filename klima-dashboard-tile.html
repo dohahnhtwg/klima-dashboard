@@ -60,6 +60,9 @@ tile of klima-dashboard
   <script>
     Polymer({
       is: 'klima-dashboard-tile',
+      observers: [
+        '_validateOverlap(overlap, positions)'
+      ],
       properties: {
         row: {
           type: Number,
@@ -107,6 +110,13 @@ tile of klima-dashboard
         leftButtonVisible: {
           type: Boolean,
           value: false
+        }
+      },
+
+      _validateOverlap: function(overlap, positions) {
+        var valid = overlap + 1 != positions.length;
+        if(valid) {
+          console.warn("Not enough positions for " + this.id);
         }
       },
 

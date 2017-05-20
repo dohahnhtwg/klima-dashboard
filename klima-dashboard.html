@@ -93,10 +93,6 @@ dashboard
       },
 
       _addTileToDashboard: function(tile, row) {
-        var notEnoughPositionsForRow = tile.overlap+1 != tile.positions.length;
-        if(notEnoughPositionsForRow) {
-          console.warn(tile.outerHTML + "\nNo position for row " + row);
-        }
         if(this.dashboardMap.has(row)) {
           this.dashboardMap.get(row).push(tile);
         } else {

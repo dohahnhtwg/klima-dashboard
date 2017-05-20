@@ -225,8 +225,8 @@ dashboard
         this.dashboardMap.forEach(function(tiles, k) {
           var noTileVisible = true;
           for(var i=0; i < tiles.length; i++) {
-            var x = (i == tiles.length-1) && noTileVisible;
-            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth && !x) {
+            var lastTileToBeVisible = (i == tiles.length-1) && noTileVisible;
+            if(parseFloat(tiles[i].style.width, 10) < tiles[i].minWidth && !lastTileToBeVisible) {
               this._hideTile(tiles[i]);
             } else {
               noTileVisible = false;
@@ -242,21 +242,32 @@ dashboard
         var tileLeft = parseFloat(tile.style.left, 10);
         var leftNeighbour = this._getLeftNeighbour(tile);
         var rightNeighbour = this._getRightNeighbour(tile);
-        if(rightNeighbour == null) {
-          if(leftNeighbour == null) {
-            return
-          } else {
-            this._giveLeftNeighbourMoreRoom(leftNeighbour, tileWidth);
-            leftNeighbour.nextRightTile = function() {
-              this._focusTile(tile, leftNeighbour);
+        if(rightNeighbour != null || leftNeighbour != null) {
+          // rightNeighbour is preferd
+          if(rightNeighbour != null) {
+            if(leftNeighbour != null && leftNeighbour.isDisplayed) {
+              leftNeighbour.nextRightTile = function() {
+                this._focusTile(tile, leftNeighbour);
+              }.bind(this);
+            }
+            this._giveRightNeighbourMoreRoom(rightNeighbour, tileLeft, tileWidth);
+            rightNeighbour.nextLeftTile = function() {
+              this._focusTile(tile, rightNeighbour);
             }.bind(this);
-            tile.isDisplayed = false;
+          } else {
+            if(rightNeighbour != null && rightNeighbour.isDisplayed) {
+              rightNeighbour.nextLeftTile = function() {
+                this._focusTile(tile, rightNeighbour);
+              }.bind(this);
+            }
+            var firstVisibleLeftNbr = tile.getFirstVisibleLeftNbr();
+            if(firstVisibleLeftNbr != null) {
+              this._giveLeftNeighbourMoreRoom(firstVisibleLeftNbr, tileWidth);
+              leftNeighbour.nextRightTile = function() {
+                this._focusTile(tile, leftNeighbour);
+              }.bind(this);
+            }
           }
-        } else {
-          this._giveRightNeighbourMoreRoom(rightNeighbour, tileLeft, tileWidth);
-          rightNeighbour.nextLeftTile = function() {
-            this._focusTile(tile, rightNeighbour);
-          }.bind(this);
           tile.isDisplayed = false;
         }
       },
@@ -279,17 +290,31 @@ dashboard
         tile.style.left = actualTile.style.left;
         actualTile.isDisplayed = false;
         tile.isDisplayed = true;
+        this._adjustArrowsNewFocusedTile(tile);
+      },
+
+      _adjustArrowsNewFocusedTile: function(tile) {
         var leftNeighbour = this._getLeftNeighbour(tile);
         var rightNeighbour = this._getRightNeighbour(tile);
-        if(leftNeighbour != null && !leftNeighbour.isDisplayed) {
-          tile.nextLeftTile = function() {
-            this._focusTile(leftNeighbour, tile);
-          }.bind(this);
+        if(leftNeighbour != null) {
+          if(!leftNeighbour.isDisplayed) {
+            tile.nextLeftTile = function() {
+              this._focusTile(leftNeighbour, tile);
+            }.bind(this);
+          } else {
+            tile.nextLeftTile = null;
+            leftNeighbour.nextRightTile = null;
+          }
         }
-        if(rightNeighbour != null && !rightNeighbour.isDisplayed) {
-          tile.nextRightTile = function() {
-            this._focusTile(rightNeighbour, tile);
-          }.bind(this);
+        if(rightNeighbour != null) {
+          if(!rightNeighbour.isDisplayed) {
+            tile.nextRightTile = function() {
+              this._focusTile(rightNeighbour, tile);
+            }.bind(this);
+          } else {
+            tile.nextRightTile = null;
+            rightNeighbour.nextLeftTile = null;
+          }
         }
       },
 

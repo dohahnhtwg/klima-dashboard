@@ -178,6 +178,13 @@ tile of klima-dashboard
           return true;
         }
         return false;
+      },
+      getFirstVisibleLeftNbr: function() {
+        var leftNeighbour = this.leftNeighbour;
+        while (leftNeighbour.leftNeighbour != null && !leftNeighbour.isDisplayed) {
+          leftNeighbour = leftNeighbour.leftNeighbour;
+        }
+        return leftNeighbour;
       }
     });
   </script>

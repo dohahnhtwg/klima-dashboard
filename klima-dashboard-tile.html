@@ -6,6 +6,7 @@
 `klima-dashboard-tile`
 tile of klima-dashboard
 
+@demo demo/index.html
 -->
 
 <dom-module id="klima-dashboard-tile">
@@ -64,49 +65,85 @@ tile of klima-dashboard
         '_validateOverlap(overlap, positions)'
       ],
       properties: {
+        /**
+         * Row in Dashboard
+         */
         row: {
           type: Number,
           value: 0
         },
+        /**
+         * Number of rows this tile overlaps in Dashboard
+         */
         overlap: {
           type: Number,
           value: 0
         },
+        /**
+         * Width of tile in percent relative to dashboard width
+         */
         width: {
           type: Number,
           value: 0
         },
+        /**
+         * Left neighbour of tile. null if left-most tile
+         */
         leftNeighbour: {
           type: Object
         },
+        /**
+         * Right neighbour of tile. Null if right-most tile
+         */
         rightNeighbour: {
           type: Object
         },
+        /**
+         * Positions in Dashboard rows
+         */
         positions: {
           type: Array,
           value: [1]
         },
+        /**
+         * Minimal width of tile. Only required if dashboard is in responsive mode.
+         */
         minWidth: {
           type: Number,
-          type: Infinity
+          value: 0
         },
+        /**
+         * True if the tile is currently displayed in Dashboard
+         */
         isDisplayed: {
           type: Boolean,
           value: true,
           observer: '_displayedChanged'
         },
+        /**
+         * Method which refers to the right neighbour if it's currently not displayed
+         */
         nextRightTile: {
           type: Object,
           observer: '_nextRightTileChanged'
         },
+        /**
+         * Method which refers to the left neighbour if it's currently not displayed
+         */
         nextLeftTile: {
           type: Object,
           observer: '_nextLeftTileChanged'
         },
+        /**
+         * True if the button which refers to the right neighbour is urrently visible
+         */
         rightButtonVisible: {
           type: Boolean,
           value: false
         },
+        /**
+         * True if the button which refers to the left neighbour is urrently visible
+         */
         leftButtonVisible: {
           type: Boolean,
           value: false
@@ -125,6 +162,9 @@ tile of klima-dashboard
         this.fire('isDisplayedChanged', newValue);
       },
 
+      /**
+       * Sets a border around this tile
+       */
       setBorder: function(top, right, bottom, left, color) {
         this.style.borderTopWidth = top;
         this.style.borderRightWidth = right;
@@ -167,6 +207,10 @@ tile of klima-dashboard
           this.nextRightTile();
         }
       },
+
+      /**
+       * @return True if most-right tile in Dashboard row
+       */
       isLastVisibleTileInRow: function() {
         if(!this.isDisplayed) {return false;}
         var rightNeighbour = this.rightNeighbour;
@@ -178,6 +222,10 @@ tile of klima-dashboard
         }
         return false;
       },
+
+      /**
+       * @return True if most-left tile in Dashboard row
+       */
       isFirstVisibleTileInRow: function() {
         if(!this.isDisplayed) {return false;}
         var leftNeighbour = this.leftNeighbour;
@@ -189,6 +237,10 @@ tile of klima-dashboard
         }
         return false;
       },
+
+      /**
+       * @return First left visible neighbour or null if none exists
+       */
       getFirstVisibleLeftNbr: function() {
         var leftNeighbour = this.leftNeighbour;
         while (leftNeighbour.leftNeighbour != null && !leftNeighbour.isDisplayed) {
@@ -196,6 +248,10 @@ tile of klima-dashboard
         }
         return leftNeighbour;
       },
+
+      /**
+       * @return String representation of tile
+       */
       tileInfo: function() {
         leftNrb = this.leftNeighbour ? this.leftNeighbour.id : "Null";
         rightNrb = this.rightNeighbour ? this.rightNeighbour.id : "Null";

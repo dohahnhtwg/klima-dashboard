@@ -41,20 +41,34 @@ dashboard
         '_adjustHeaderBorder(borderWidth, borderColor)'
       ],
       properties: {
+        /**
+         * Map with all tiles of dashboard. Keys corresponds to dashboard
+         * rows and values to tiles in row.
+         */
         dashboardMap: {
           type: Object,
           value: function() {
             return new Map();
           }
         },
+        /**
+         * Width of border
+         */
         borderWidth: {
           type: Number,
           value: 0
         },
+        /**
+         * Color of border
+         */
         borderColor: {
           type: String,
           value: '#3F51B5'
         },
+        /**
+         * If true the Dashboard is responsive and adjusts it's width
+         * to the given width of the parent element.
+         */
         responsive: {
           type: Boolean,
           value: false
@@ -69,7 +83,7 @@ dashboard
       attached: function() {
         this._addTilesFromLightDomToDashboard();
         this._sortDashboardMap();
-        this._printDashboard();
+        //this._printDashboard();
         this._drawDashboard();
         this._setBorders();
       },
@@ -153,6 +167,9 @@ dashboard
         return minTile;
       },
 
+      /**
+       * Prints a string representation to console
+       */
       _printDashboard: function() {
         this.dashboardMap.forEach(function(tiles, row) {
           tiles.forEach(function(tile) {
@@ -163,11 +180,12 @@ dashboard
         });
       },
 
+      /**
+       * Forces a Dashboard draw
+       */
       _drawDashboard: function() {
         var dashboardHeight = this.$.dashboard.offsetHeight;
         var dashboardWidth = this.$.dashboard.offsetWidth;
-        var rowHeight = dashboardHeight/this.dashboardMap.size;
-        var dashboardMap = this.dashboardMap;
         this.dashboardMap.forEach(function(tiles, k) {
           tiles.forEach(function(tile) {
             var biggestLeftNeighbour = 0;
@@ -175,8 +193,7 @@ dashboard
             var minWidth = Infinity;
             for(var i=0; i <= tile.overlap; i++) {
               var indexRightNeighbour = tile.positions[i];
-              var row = dashboardMap.get(tile.row + i);
-              var rightNeighbour = row[indexRightNeighbour];
+              var row = this.dashboardMap.get(tile.row + i);
               var remainingTiles = 1;
               var reservedWidth = 0;
               if(tile.width == 0) {
@@ -193,7 +210,7 @@ dashboard
                 if(row[indexRightNeighbour-2] == null) {
                   start = 0;
                 } else {
-                  start = parseFloat(row[indexRightNeighbour-2].style.left, 10) + parseFloat(row[indexRightNeighbour-2].style.width, 10);
+                  start = parseFloat(row[indexRightNeighbour-2].style.left, 10) + parseFloat(row[indexRightNeighbour-2].style.width, 10)
                 }
                 if(row[j] == null) {
                   end = dashboardWidth;
@@ -217,11 +234,45 @@ dashboard
                 biggestLeftNeighbour = left;
               }
             }
+            var rowHeight = dashboardHeight/this.dashboardMap.size;
             this._drawTile(tile, tileWidth, rowHeight, biggestLeftNeighbour)
           }.bind(this));
         }.bind(this));
         this._fillRemainingSpaces();
         this._makeRoomForTiles();
+      },
+
+      _fillRemainingSpaces: function() {
+        this.dashboardMap.forEach(function(tiles, k) {
+          for(var i=0; i < tiles.length; i++) {
+            if(tiles[i+1] != null) {
+              if(tiles[i+1].width == 0) {
+                if(this._isfullyCovered(tiles[i], tiles[i+1])) {
+                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
+                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
+                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
+                    tiles[i+1].style.left = rightBorder + 'px';
+                    tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
+                  }
+                }
+              }
+              if(tiles[i].width == 0) {
+                if(this._isfullyCovered(tiles[i+1], tiles[i])) {
+                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
+                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
+                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
+                    tiles[i].style.width = (parseFloat(tiles[i].style.width, 10) + diff) + 'px';
+                  }
+                }
+              }
+            }
+          }
+        }.bind(this));
+      },
+
+      _isfullyCovered: function(tileA, tileB) {
+        return (tileA.row <= tileB.row &&
+          tileA.row + tileA.overlap >= tileB.row + tileB.overlap);
       },
 
       _makeRoomForTiles: function() {
@@ -366,39 +417,6 @@ dashboard
         tile.style.left = leftBorder + 'px';
         tile.style.top = (tile.row-1)*rowHeight + 'px';
         tile.style.height = (tile.overlap+1)*rowHeight + 'px';
-      },
-
-      _fillRemainingSpaces: function() {
-        this.dashboardMap.forEach(function(tiles, k) {
-          for(var i=0; i < tiles.length; i++) {
-            if(tiles[i+1] != null) {
-              if(tiles[i+1].width == 0) {
-                if(this._isfullyCovered(tiles[i], tiles[i+1])) {
-                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
-                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
-                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
-                    tiles[i+1].style.left = rightBorder + 'px';
-                    tiles[i+1].style.width = (parseFloat(tiles[i+1].style.width, 10) + diff) + 'px';
-                  }
-                }
-              }
-              if(tiles[i].width == 0) {
-                if(this._isfullyCovered(tiles[i+1], tiles[i])) {
-                  var rightBorder = parseFloat(tiles[i].style.left, 10) + parseFloat(tiles[i].style.width, 10);
-                  if(rightBorder < parseFloat(tiles[i+1].style.left, 10)) {
-                    var diff = parseFloat(tiles[i+1].style.left, 10) - rightBorder;
-                    tiles[i].style.width = (parseFloat(tiles[i].style.width, 10) + diff) + 'px';
-                  }
-                }
-              }
-            }
-          }
-        }.bind(this));
-      },
-
-      _isfullyCovered: function(tileA, tileB) {
-        return (tileA.row <= tileB.row &&
-          tileA.row + tileA.overlap >= tileB.row + tileB.overlap);
       },
 
       _setBorders: function() {
